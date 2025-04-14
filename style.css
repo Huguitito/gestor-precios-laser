@@ -1,0 +1,522 @@
+/* Estilos Generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente limpia */
+    background-color: #F8F9FA; /* Fondo blanco roto */
+    color: #343A40; /* Texto gris oscuro */
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+h1, h2, h3, h4 {
+    color: #1D3557; /* Azul oscuro */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+button {
+    background-color: #457B9D; /* Azul suave */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease, opacity 0.2s ease; /* Efecto suave */
+    vertical-align: middle;
+}
+
+button:hover {
+    background-color: #1D3557; /* Azul más oscuro al pasar el ratón */
+}
+
+button:disabled {
+    background-color: #adb5bd; /* Gris para deshabilitado */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #CED4DA; /* Borde gris claro */
+    border-radius: 4px;
+    box-sizing: border-box; /* Para que el padding no aumente el tamaño total */
+    font-size: 1em;
+}
+
+input:disabled, textarea:disabled {
+    background-color: #e9ecef; /* Fondo grisáceo */
+    cursor: not-allowed; /* Cursor de no permitido */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 25px 0;
+}
+
+/* Contenedor Login */
+#login-container {
+    max-width: 400px;
+    margin: 50px auto; /* Centrar */
+    padding: 30px;
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Mensajes de Error / Feedback */
+.error-message { /* Para error de login */
+    color: #E63946; /* Rojo para errores */
+    font-size: 0.9em;
+    margin-top: 10px;
+    display: none; /* Oculto por defecto */
+    font-weight: bold;
+}
+.feedback-message { /* Para modal y global */
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+    display: none; /* Oculto por defecto */
+    font-size: 0.95em;
+}
+.feedback-message.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+.feedback-message.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+.feedback-message.info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+
+
+/* Contenedor Principal de la App */
+#app-container {
+    max-width: 1200px; /* Ancho máximo */
+    margin: 20px auto; /* Centrado */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#app-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Adaptar en pantallas pequeñas */
+    gap: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+#app-container header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    text-align: left;
+}
+
+#user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#user-info span {
+    font-style: italic;
+}
+
+#logout-button {
+    background-color: #A8DADC; /* Verde azulado pálido para logout */
+    color: #1D3557; /* Texto oscuro */
+    font-size: 0.9em;
+    padding: 8px 12px;
+}
+#logout-button:hover {
+    background-color: #8ac7c7;
+}
+
+/* Info de Rol */
+#user-role-info p {
+    font-size: 1.1em;
+    text-align: center;
+    margin: 0 0 10px 0;
+}
+#user-role-info strong {
+    color: #457B9D;
+}
+
+/* --- Estilos Controles Globales de Admin --- */
+#admin-controls h4 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    color: #1D3557;
+    text-align: center;
+}
+
+.global-price-controls {
+    background-color: #f8f9fa; /* Fondo ligeramente diferente */
+    padding: 15px 20px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 10px;
+}
+
+.global-price-controls label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.percentage-input-group {
+    display: flex;
+    justify-content: center; /* Centrar elementos */
+    align-items: center;
+    flex-wrap: wrap; /* Permitir que se envuelvan en pantallas pequeñas */
+    gap: 10px; /* Espacio entre elementos */
+}
+
+.percentage-input-group input[type="number"] {
+    width: 100px; /* Ancho fijo para el input de % */
+    text-align: center;
+    margin-bottom: 0; /* Resetear margen */
+}
+
+.global-action-button {
+    padding: 8px 15px;
+    font-size: 0.95em;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.global-action-button.increase {
+    background-color: #2a9d8f; /* Verde azulado */
+}
+.global-action-button.increase:hover {
+    background-color: #268c80;
+}
+
+.global-action-button.decrease {
+    background-color: #e76f51; /* Naranja rojizo */
+}
+.global-action-button.decrease:hover {
+    background-color: #d96548;
+}
+
+#global-update-feedback {
+    margin-top: 15px;
+    text-align: center;
+}
+
+
+/* Sección de Controles (Botón Agregar y Búsqueda) */
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Para que se adapte en pantallas pequeñas */
+    gap: 15px; /* Espacio entre elementos si se envuelven */
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre la etiqueta y el input */
+}
+
+.search-container label {
+    margin-bottom: 0; /* Quitar margen inferior de la etiqueta */
+    font-weight: normal;
+}
+
+#search-input {
+    padding: 8px 10px;
+    border: 1px solid #CED4DA;
+    border-radius: 4px;
+    width: 250px; /* Ancho fijo o ajustable según prefieras */
+    margin-bottom: 0; /* Quitar margen inferior */
+}
+
+/* Estilos Lista de Productos */
+#product-list-container h2 {
+    text-align: center;
+    color: #1D3557;
+    margin-bottom: 15px;
+}
+
+#loading-indicator {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1em;
+    color: #457B9D;
+}
+
+#products-table-container {
+    border: 1px solid #dee2e6; /* Borde suave alrededor del contenedor con scroll */
+    border-radius: 5px;
+    margin-top: 15px; /* Espacio arriba */
+}
+
+#products-table {
+    width: 100%;
+    border-collapse: collapse; /* Unir bordes de celdas */
+    background-color: #fff;
+}
+
+#products-table th,
+#products-table td {
+    border: 1px solid #dee2e6; /* Bordes de celdas */
+    padding: 10px 12px; /* Espacio interior */
+    text-align: left;
+    vertical-align: middle; /* Alinear verticalmente al medio */
+    font-size: 0.95em; /* Ligeramente más pequeño para caber más */
+}
+
+#products-table thead th {
+    background-color: #e9ecef; /* Fondo gris claro para cabecera */
+    font-weight: bold;
+    position: sticky; /* Cabecera fija al hacer scroll */
+    top: 0; /* Pegar al borde superior del contenedor con scroll */
+    z-index: 1; /* Asegurar que esté por encima del cuerpo */
+}
+
+#products-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Filas alternas con fondo suave */
+}
+
+#products-table tbody tr:hover {
+    background-color: #e2e6ea; /* Efecto hover en filas */
+}
+
+/* Estilos para la columna de Precio y Acciones */
+#products-table td:nth-child(5) { /* Columna Precio Venta */
+    font-weight: bold;
+    color: #2a9d8f; /* Un color verde azulado para el precio */
+    min-width: 110px; /* Ancho mínimo */
+    text-align: right; /* Alinear precio a la derecha */
+    white-space: nowrap; /* Evitar que el precio se divida */
+}
+
+#products-table td:last-child { /* Columna Acciones */
+    text-align: center;
+    min-width: 150px; /* Ancho mínimo para botones */
+    white-space: nowrap; /* Evitar que los botones se envuelvan */
+}
+
+/* Estilos para los botones dentro de la tabla */
+#products-table .action-button {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    margin: 0 3px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    display: inline-block; /* Para que los botones no ocupen toda la celda */
+}
+
+.edit-button {
+    background-color: #fca311; /* Naranja para editar */
+}
+.edit-button:hover {
+    background-color: #e8930c;
+}
+
+.delete-button {
+    background-color: #E63946; /* Rojo para eliminar */
+}
+.delete-button:hover {
+    background-color: #cf2f3b;
+}
+
+#no-products-message {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d; /* Gris */
+}
+
+
+/* --- Estilos del Modal --- */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Quedarse fijo en la pantalla */
+    z-index: 1000; /* Por encima de todo lo demás */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Permitir scroll si el contenido es muy largo */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semitransparente */
+    padding-top: 60px; /* Espacio arriba */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* Centrado vertical y horizontal */
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%; /* Ancho del modal */
+    max-width: 600px; /* Ancho máximo */
+    border-radius: 8px;
+    position: relative; /* Para posicionar el botón de cerrar */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s; /* Animación suave */
+}
+
+/* Animación simple para aparecer */
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.95);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #1D3557;
+}
+
+/* Ajustes para el formulario dentro del modal */
+#product-form .form-group {
+    margin-bottom: 15px; /* Menos espacio entre campos */
+}
+
+#product-form label {
+    margin-bottom: 3px; /* Menos espacio bajo la etiqueta */
+    font-size: 0.95em;
+}
+
+/* Controles de porcentaje en Modal */
+#admin-price-controls label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.percentage-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.percentage-controls input[type="number"] {
+    width: 80px; /* Ancho más pequeño para el % */
+    margin-bottom: 0;
+    flex-grow: 1; /* Permitir crecer un poco */
+}
+.percentage-button {
+    padding: 8px 12px;
+    font-size: 0.9em;
+    flex-shrink: 0; /* No achicar los botones */
+}
+.percentage-button.increase {
+    background-color: #52b788; /* Verde para aumentar */
+}
+.percentage-button.increase:hover {
+    background-color: #40916c;
+}
+.percentage-button.decrease {
+    background-color: #f77f00; /* Naranja para bajar */
+}
+.percentage-button.decrease:hover {
+    background-color: #d66c00;
+}
+
+/* Botones Guardar/Cancelar en Modal */
+.form-actions {
+    text-align: right; /* Alinear botones a la derecha */
+    margin-top: 25px;
+}
+.form-actions button {
+    margin-left: 10px;
+}
+.form-actions button[type="button"] { /* Estilo específico para Cancelar */
+    background-color: #6c757d; /* Gris */
+}
+.form-actions button[type="button"]:hover {
+    background-color: #5a6268;
+}
+
+/* --- Estilos para Feedback Temporal (Opcional) --- */
+.temporary-feedback {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 2000; /* Muy alto para estar encima de todo */
+    font-size: 1em;
+    font-weight: bold;
+    opacity: 0.95;
+    transition: opacity 0.5s ease-out;
+}
+
+.temporary-feedback.success {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.temporary-feedback.error {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
+
+.temporary-feedback.info {
+    background-color: #17a2b8; /* Azul info */
+    color: white;
+}

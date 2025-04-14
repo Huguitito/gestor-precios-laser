@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Precios Láser</title>
+    <!-- Enlace a la hoja de estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon (opcional) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏷️</text></svg>">
+</head>
+<body>
+
+    <!-- Contenedor de Login (Visible inicialmente) -->
+    <div id="login-container">
+        <h1>Gestor de Precios 🏷️✂️ - Iniciar Sesión</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" id="login-button">Entrar 🔑</button>
+            <p id="login-error" class="error-message"></p>
+        </form>
+    </div>
+
+    <!-- Contenedor Principal de la App (Oculto inicialmente) -->
+    <div id="app-container" style="display: none;">
+        <header>
+            <h1>Gestor de Precios Láser</h1>
+            <div id="user-info">
+                <span id="user-email"></span>
+                <button id="logout-button">Cerrar Sesión 👋</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Mensajes de rol -->
+            <div id="user-role-info">
+                <div id="admin-controls" style="display: none;">
+                  <p>Rol: <strong>Administrador</strong> ✨</p>
+                  <hr>
+                  <h4>Herramientas Globales</h4>
+                  <div class="global-price-controls">
+                      <label for="global-percentage">Ajustar TODOS los precios (%):</label>
+                      <div class="percentage-input-group">
+                          <input type="number" id="global-percentage" placeholder="Ej: 10 o -5">
+                          <button type="button" id="increase-global-button" class="global-action-button increase">📈 Aumentar Global %</button>
+                          <button type="button" id="decrease-global-button" class="global-action-button decrease">📉 Bajar Global %</button>
+                      </div>
+                      <p id="global-update-feedback" class="feedback-message"></p>
+                  </div>
+                  <hr>
+                </div>
+                <div id="dataentry-controls" style="display: none;">
+                  <p>Rol: <strong>Data Entry</strong> ✍️</p>
+                   <hr>
+                </div>
+            </div>
+
+            <!-- Sección de Controles y Búsqueda -->
+            <div class="controls-section">
+                <button id="add-product-button">➕ Agregar Producto Nuevo</button>
+                <div class="search-container">
+                    <label for="search-input">🔍 Buscar:</label>
+                    <input type="search" id="search-input" placeholder="Buscar por nombre, material...">
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Área de Listado de Productos -->
+            <h2>Listado de Productos</h2>
+            <div id="product-list-container">
+                 <div id="loading-indicator" style="display: none;">Cargando productos... 🔄</div>
+                 <div id="products-table-container" style="max-height: 65vh; overflow-y: auto;">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Material</th>
+                                <th>Medida</th>
+                                <th>Precio Venta</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-tbody">
+                            <!-- Las filas de productos se insertarán aquí con JavaScript -->
+                        </tbody>
+                    </table>
+                 </div>
+                 <p id="no-products-message" style="display: none;">No hay productos cargados todavía.</p>
+            </div>
+
+            <!-- Modal o Formulario para Agregar/Editar Productos -->
+            <div id="product-form-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-button" id="close-modal-button">&times;</span>
+                    <h2 id="modal-title">Agregar/Editar Producto</h2>
+                    <form id="product-form">
+                        <input type="hidden" id="product-id">
+
+                        <div class="form-group">
+                            <label for="product-nombre">Nombre:</label>
+                            <input type="text" id="product-nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-descripcion">Descripción:</label>
+                            <textarea id="product-descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-material">Material:</label>
+                            <input type="text" id="product-material">
+                        </div>
+                        <div class="form-group">
+                            <label for="product-medida">Medida:</label>
+                            <input type="text" id="product-medida">
+                        </div>
+                        <div class="form-group">
+                            <label for="product-precioVenta">Precio Venta ($):</label>
+                            <input type="number" id="product-precioVenta" step="0.01" required min="0">
+                        </div>
+
+                        <div id="admin-price-controls" class="form-group" style="display: none;">
+                            <hr>
+                            <label>Ajustar Precio por Porcentaje:</label>
+                            <div class="percentage-controls">
+                                <input type="number" id="product-percentage" placeholder="%" min="0">
+                                <button type="button" id="increase-percentage-button" class="percentage-button increase">Aumentar %</button>
+                                <button type="button" id="decrease-percentage-button" class="percentage-button decrease">Bajar %</button>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="form-actions">
+                            <button type="submit" id="save-product-button">💾 Guardar</button>
+                            <button type="button" id="cancel-modal-button">Cancelar</button>
+                        </div>
+                         <p id="form-feedback" class="feedback-message"></p>
+                    </form>
+                </div>
+            </div>
+            <!-- Fin del Modal -->
+        </main>
+    </div>
+
+    <!-- Script de Firebase y Lógica de la App -->
+    <!-- Usamos type="module" para importar funciones de Firebase -->
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>
