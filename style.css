@@ -1,8 +1,8 @@
 /* Estilos Generales */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente limpia */
-    background-color: #F8F9FA; /* Fondo blanco roto */
-    color: #343A40; /* Texto gris oscuro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F8F9FA;
+    color: #343A40;
     margin: 0;
     padding: 20px;
     line-height: 1.6;
@@ -10,7 +10,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-    color: #1D3557; /* Azul oscuro */
+    color: #1D3557;
 }
 
 h1 {
@@ -19,23 +19,23 @@ h1 {
 }
 
 button {
-    background-color: #457B9D; /* Azul suave */
+    background-color: #457B9D;
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.2s ease, opacity 0.2s ease; /* Efecto suave */
+    transition: background-color 0.2s ease, opacity 0.2s ease;
     vertical-align: middle;
 }
 
 button:hover {
-    background-color: #1D3557; /* Azul más oscuro al pasar el ratón */
+    background-color: #1D3557;
 }
 
 button:disabled {
-    background-color: #adb5bd; /* Gris para deshabilitado */
+    background-color: #adb5bd;
     cursor: not-allowed;
     opacity: 0.7;
 }
@@ -50,15 +50,15 @@ textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #CED4DA; /* Borde gris claro */
+    border: 1px solid #CED4DA;
     border-radius: 4px;
-    box-sizing: border-box; /* Para que el padding no aumente el tamaño total */
+    box-sizing: border-box;
     font-size: 1em;
 }
 
 input:disabled, textarea:disabled {
-    background-color: #e9ecef; /* Fondo grisáceo */
-    cursor: not-allowed; /* Cursor de no permitido */
+    background-color: #e9ecef;
+    cursor: not-allowed;
 }
 
 label {
@@ -77,11 +77,11 @@ hr {
 /* Contenedor Login */
 #login-container {
     max-width: 400px;
-    margin: 50px auto; /* Centrar */
+    margin: 50px auto;
     padding: 30px;
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
@@ -89,20 +89,20 @@ hr {
 }
 
 /* Mensajes de Error / Feedback */
-.error-message { /* Para error de login */
-    color: #E63946; /* Rojo para errores */
+.error-message {
+    color: #E63946;
     font-size: 0.9em;
     margin-top: 10px;
-    display: none; /* Oculto por defecto */
+    display: none;
     font-weight: bold;
 }
-.feedback-message { /* Para modal y global */
+.feedback-message {
     margin-top: 15px;
     font-weight: bold;
     text-align: center;
     padding: 10px;
     border-radius: 4px;
-    display: none; /* Oculto por defecto */
+    display: none;
     font-size: 0.95em;
 }
 .feedback-message.success {
@@ -124,8 +124,8 @@ hr {
 
 /* Contenedor Principal de la App */
 #app-container {
-    max-width: 1200px; /* Ancho máximo */
-    margin: 20px auto; /* Centrado */
+    max-width: 1200px;
+    margin: 20px auto;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -136,7 +136,7 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Adaptar en pantallas pequeñas */
+    flex-wrap: wrap;
     gap: 10px;
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 15px;
@@ -160,8 +160,8 @@ hr {
 }
 
 #logout-button {
-    background-color: #A8DADC; /* Verde azulado pálido para logout */
-    color: #1D3557; /* Texto oscuro */
+    background-color: #A8DADC;
+    color: #1D3557;
     font-size: 0.9em;
     padding: 8px 12px;
 }
@@ -188,7 +188,7 @@ hr {
 }
 
 .global-price-controls {
-    background-color: #f8f9fa; /* Fondo ligeramente diferente */
+    background-color: #f8f9fa;
     padding: 15px 20px;
     border-radius: 6px;
     border: 1px solid #dee2e6;
@@ -204,16 +204,16 @@ hr {
 
 .percentage-input-group {
     display: flex;
-    justify-content: center; /* Centrar elementos */
+    justify-content: center;
     align-items: center;
-    flex-wrap: wrap; /* Permitir que se envuelvan en pantallas pequeñas */
-    gap: 10px; /* Espacio entre elementos */
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .percentage-input-group input[type="number"] {
-    width: 100px; /* Ancho fijo para el input de % */
+    width: 100px;
     text-align: center;
-    margin-bottom: 0; /* Resetear margen */
+    margin-bottom: 0;
 }
 
 .global-action-button {
@@ -227,14 +227,14 @@ hr {
 }
 
 .global-action-button.increase {
-    background-color: #2a9d8f; /* Verde azulado */
+    background-color: #2a9d8f;
 }
 .global-action-button.increase:hover {
     background-color: #268c80;
 }
 
 .global-action-button.decrease {
-    background-color: #e76f51; /* Naranja rojizo */
+    background-color: #e76f51;
 }
 .global-action-button.decrease:hover {
     background-color: #d96548;
@@ -252,18 +252,18 @@ hr {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Para que se adapte en pantallas pequeñas */
-    gap: 15px; /* Espacio entre elementos si se envuelven */
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .search-container {
     display: flex;
     align-items: center;
-    gap: 8px; /* Espacio entre la etiqueta y el input */
+    gap: 8px;
 }
 
 .search-container label {
-    margin-bottom: 0; /* Quitar margen inferior de la etiqueta */
+    margin-bottom: 0;
     font-weight: normal;
 }
 
@@ -271,8 +271,8 @@ hr {
     padding: 8px 10px;
     border: 1px solid #CED4DA;
     border-radius: 4px;
-    width: 250px; /* Ancho fijo o ajustable según prefieras */
-    margin-bottom: 0; /* Quitar margen inferior */
+    width: 250px;
+    margin-bottom: 0;
 }
 
 /* Estilos Lista de Productos */
@@ -290,58 +290,58 @@ hr {
 }
 
 #products-table-container {
-    border: 1px solid #dee2e6; /* Borde suave alrededor del contenedor con scroll */
+    border: 1px solid #dee2e6;
     border-radius: 5px;
-    margin-top: 15px; /* Espacio arriba */
+    margin-top: 15px;
 }
 
 #products-table {
     width: 100%;
-    border-collapse: collapse; /* Unir bordes de celdas */
+    border-collapse: collapse;
     background-color: #fff;
 }
 
 #products-table th,
 #products-table td {
-    border: 1px solid #dee2e6; /* Bordes de celdas */
-    padding: 10px 12px; /* Espacio interior */
+    border: 1px solid #dee2e6;
+    padding: 10px 12px;
     text-align: left;
-    vertical-align: middle; /* Alinear verticalmente al medio */
-    font-size: 0.95em; /* Ligeramente más pequeño para caber más */
+    vertical-align: middle;
+    font-size: 0.95em;
 }
 
 #products-table thead th {
-    background-color: #e9ecef; /* Fondo gris claro para cabecera */
+    background-color: #e9ecef;
     font-weight: bold;
-    position: sticky; /* Cabecera fija al hacer scroll */
-    top: 0; /* Pegar al borde superior del contenedor con scroll */
-    z-index: 1; /* Asegurar que esté por encima del cuerpo */
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 #products-table tbody tr:nth-child(even) {
-    background-color: #f8f9fa; /* Filas alternas con fondo suave */
+    background-color: #f8f9fa;
 }
 
 #products-table tbody tr:hover {
-    background-color: #e2e6ea; /* Efecto hover en filas */
+    background-color: #e2e6ea;
 }
 
-/* Estilos para la columna de Precio y Acciones */
-#products-table td:nth-child(5) { /* Columna Precio Venta */
+#products-table td:nth-child(5) { /* Precio Venta */
     font-weight: bold;
-    color: #2a9d8f; /* Un color verde azulado para el precio */
-    min-width: 110px; /* Ancho mínimo */
-    text-align: right; /* Alinear precio a la derecha */
-    white-space: nowrap; /* Evitar que el precio se divida */
+    color: #2a9d8f;
+    min-width: 110px;
+    text-align: right;
+    white-space: nowrap;
 }
 
-#products-table td:last-child { /* Columna Acciones */
+#products-table td:last-child { /* Acciones */
     text-align: center;
-    min-width: 150px; /* Ancho mínimo para botones */
-    white-space: nowrap; /* Evitar que los botones se envuelvan */
+    /* Aumentar ancho mínimo para acomodar el nuevo botón QR */
+    min-width: 200px;
+    white-space: nowrap;
 }
 
-/* Estilos para los botones dentro de la tabla */
+/* Estilos botones de acción en tabla */
 #products-table .action-button {
     padding: 5px 10px;
     font-size: 0.9em;
@@ -350,61 +350,58 @@ hr {
     border-radius: 4px;
     border: none;
     color: white;
-    display: inline-block; /* Para que los botones no ocupen toda la celda */
+    display: inline-block;
 }
 
-.edit-button {
-    background-color: #fca311; /* Naranja para editar */
-}
-.edit-button:hover {
-    background-color: #e8930c;
-}
+.edit-button { background-color: #fca311; }
+.edit-button:hover { background-color: #e8930c; }
 
-.delete-button {
-    background-color: #E63946; /* Rojo para eliminar */
-}
-.delete-button:hover {
-    background-color: #cf2f3b;
-}
+/* *** NUEVO: Estilo botón QR *** */
+.qr-button { background-color: #0077b6; } /* Azul distintivo */
+.qr-button:hover { background-color: #025e8f; }
+
+.delete-button { background-color: #E63946; }
+.delete-button:hover { background-color: #cf2f3b; }
 
 #no-products-message {
     text-align: center;
     padding: 20px;
-    color: #6c757d; /* Gris */
+    color: #6c757d;
 }
 
 
-/* --- Estilos del Modal --- */
+/* --- Estilos del Modal (Genérico) --- */
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Quedarse fijo en la pantalla */
-    z-index: 1000; /* Por encima de todo lo demás */
+    display: none;
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; /* Permitir scroll si el contenido es muy largo */
-    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semitransparente */
-    padding-top: 60px; /* Espacio arriba */
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding-top: 60px;
+    animation: fadeIn 0.3s;
 }
 
-.modal-content {
+/* Animación */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* Contenido del modal Formulario */
+#product-form-modal .modal-content {
     background-color: #fefefe;
-    margin: 5% auto; /* Centrado vertical y horizontal */
+    margin: 5% auto;
     padding: 30px;
     border: 1px solid #888;
-    width: 90%; /* Ancho del modal */
-    max-width: 600px; /* Ancho máximo */
+    width: 90%;
+    max-width: 600px;
     border-radius: 8px;
-    position: relative; /* Para posicionar el botón de cerrar */
+    position: relative;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: fadeIn 0.3s; /* Animación suave */
-}
-
-/* Animación simple para aparecer */
-@keyframes fadeIn {
-    from {opacity: 0; transform: scale(0.95);}
-    to {opacity: 1; transform: scale(1);}
 }
 
 .close-button {
@@ -415,6 +412,7 @@ hr {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    line-height: 1; /* Asegurar que no tenga espacio extra */
 }
 
 .close-button:hover,
@@ -423,100 +421,178 @@ hr {
     text-decoration: none;
 }
 
-.modal-content h2 {
+/* Título en modal Formulario */
+#product-form-modal .modal-content h2 {
     text-align: center;
     margin-top: 0;
     margin-bottom: 25px;
     color: #1D3557;
 }
 
-/* Ajustes para el formulario dentro del modal */
-#product-form .form-group {
-    margin-bottom: 15px; /* Menos espacio entre campos */
-}
+/* Ajustes form dentro de modal Formulario */
+#product-form .form-group { margin-bottom: 15px; }
+#product-form label { margin-bottom: 3px; font-size: 0.95em; }
 
-#product-form label {
-    margin-bottom: 3px; /* Menos espacio bajo la etiqueta */
-    font-size: 0.95em;
-}
+/* Controles de % en modal Formulario */
+#admin-price-controls label { display: block; margin-bottom: 10px; font-weight: bold; }
+.percentage-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.percentage-controls input[type="number"] { width: 80px; margin-bottom: 0; flex-grow: 1; }
+.percentage-button { padding: 8px 12px; font-size: 0.9em; flex-shrink: 0; }
+.percentage-button.increase { background-color: #52b788; }
+.percentage-button.increase:hover { background-color: #40916c; }
+.percentage-button.decrease { background-color: #f77f00; }
+.percentage-button.decrease:hover { background-color: #d66c00; }
 
-/* Controles de porcentaje en Modal */
-#admin-price-controls label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
+/* Botones Guardar/Cancelar en modal Formulario */
+.form-actions { text-align: right; margin-top: 25px; }
+.form-actions button { margin-left: 10px; }
+.form-actions button[type="button"],
+.cancel-button { /* Estilo común para Cancelar/Cerrar */
+    background-color: #6c757d;
 }
-.percentage-controls {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.percentage-controls input[type="number"] {
-    width: 80px; /* Ancho más pequeño para el % */
-    margin-bottom: 0;
-    flex-grow: 1; /* Permitir crecer un poco */
-}
-.percentage-button {
-    padding: 8px 12px;
-    font-size: 0.9em;
-    flex-shrink: 0; /* No achicar los botones */
-}
-.percentage-button.increase {
-    background-color: #52b788; /* Verde para aumentar */
-}
-.percentage-button.increase:hover {
-    background-color: #40916c;
-}
-.percentage-button.decrease {
-    background-color: #f77f00; /* Naranja para bajar */
-}
-.percentage-button.decrease:hover {
-    background-color: #d66c00;
-}
-
-/* Botones Guardar/Cancelar en Modal */
-.form-actions {
-    text-align: right; /* Alinear botones a la derecha */
-    margin-top: 25px;
-}
-.form-actions button {
-    margin-left: 10px;
-}
-.form-actions button[type="button"] { /* Estilo específico para Cancelar */
-    background-color: #6c757d; /* Gris */
-}
-.form-actions button[type="button"]:hover {
+.form-actions button[type="button"]:hover,
+.cancel-button:hover {
     background-color: #5a6268;
 }
 
-/* --- Estilos para Feedback Temporal (Opcional) --- */
-.temporary-feedback {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 25px;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 2000; /* Muy alto para estar encima de todo */
-    font-size: 1em;
-    font-weight: bold;
-    opacity: 0.95;
-    transition: opacity 0.5s ease-out;
+
+/* --- *** NUEVO: Estilos Modal QR Code *** --- */
+#qr-code-modal .qr-modal-content {
+    background-color: #ffffff;
+    margin: 10% auto; /* Un poco más abajo */
+    padding: 25px;
+    border: 1px solid #ccc;
+    width: 90%;
+    max-width: 320px; /* Más pequeño para el QR */
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center; /* Centrar contenido */
 }
 
-.temporary-feedback.success {
-    background-color: #28a745; /* Verde */
-    color: white;
+#qr-code-modal h3 { /* Título del modal QR */
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1D3557;
+    font-size: 1.2em;
+    word-wrap: break-word; /* Evitar que títulos largos rompan el layout */
 }
 
-.temporary-feedback.error {
-    background-color: #dc3545; /* Rojo */
-    color: white;
+#qr-code-display {
+    margin: 15px auto; /* Espacio alrededor del QR */
+    display: flex; /* Para centrar el QR generado */
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* Espacio mínimo para el QR */
 }
 
-.temporary-feedback.info {
-    background-color: #17a2b8; /* Azul info */
-    color: white;
+/* Estilo para el QR generado (img o canvas) */
+#qr-code-display img,
+#qr-code-display canvas {
+    max-width: 100%; /* Asegurar que no se salga */
+    height: auto;
+    border: 1px solid #eee; /* Borde sutil */
+}
+
+.qr-modal-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around; /* Distribuir botones */
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.qr-modal-actions button {
+    font-size: 0.95em;
+    padding: 10px 15px;
+}
+
+#print-qr-button {
+    background-color: #34a853; /* Verde para imprimir */
+}
+#print-qr-button:hover {
+    background-color: #2a8c45;
+}
+
+
+/* --- Feedback Temporal (Opcional) --- */
+.temporary-feedback { /* ... (sin cambios) ... */ }
+
+
+/* --- *** NUEVO: Estilos de Impresión *** --- */
+@media print {
+    body * {
+        visibility: hidden; /* Ocultar todo por defecto */
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Hacer visible solo el contenido del modal QR y sus padres */
+    #qr-code-modal, #qr-code-modal * {
+        visibility: visible;
+    }
+
+    /* Posicionamiento para impresión */
+    #qr-code-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        padding-top: 0 !important;
+        background-color: white !important;
+        overflow: visible !important;
+    }
+
+    #qr-code-modal .qr-modal-content {
+        margin: 0 !important;
+        padding: 5mm !important; /* Margen pequeño para impresora térmica */
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-align: center !important; /* Asegurar centrado */
+        page-break-inside: avoid; /* Intentar no cortar el QR */
+    }
+
+    /* Ocultar elementos no deseados en la impresión del QR */
+    #qr-code-modal .close-button,
+    #qr-code-modal .qr-modal-actions {
+        display: none !important;
+    }
+
+    /* Estilo del título y el QR para impresión */
+    #qr-code-modal h3 {
+        font-size: 10pt !important; /* Tamaño de fuente pequeño para thermal */
+        margin-bottom: 3mm !important;
+        color: black !important; /* Asegurar negro */
+    }
+
+    #qr-code-display {
+        width: 90%; /* Ajustar ancho si es necesario */
+        height: auto;
+        margin: 0 auto !important; /* Centrar */
+        padding: 0 !important;
+    }
+
+     /* Asegurar que la imagen/canvas del QR use el espacio */
+    #qr-code-display img,
+    #qr-code-display canvas {
+       width: 100% !important;
+       height: auto !important;
+       max-width: 100% !important;
+       border: none !important; /* Sin borde al imprimir */
+       display: block !important; /* Asegurar que sea bloque */
+       margin: 0 auto !important; /* Centrar */
+    }
+
+    @page {
+        size: auto; /* Intentar adaptarse al tamaño del papel */
+        margin: 5mm; /* Margen mínimo */
+    }
 }

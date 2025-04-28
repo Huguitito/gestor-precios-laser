@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Precios Láser</title>
-    <!-- Enlace a la hoja de estilos CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Favicon (opcional) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏷️</text></svg>">
+    <!-- *** NUEVO: Librería para generar QR Codes *** -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -41,7 +41,7 @@
         <main>
             <!-- Mensajes de rol -->
             <div id="user-role-info">
-                <div id="admin-controls" style="display: none;">
+                 <div id="admin-controls" style="display: none;">
                   <p>Rol: <strong>Administrador</strong> ✨</p>
                   <hr>
                   <h4>Herramientas Globales</h4>
@@ -97,14 +97,13 @@
                  <p id="no-products-message" style="display: none;">No hay productos cargados todavía.</p>
             </div>
 
-            <!-- Modal o Formulario para Agregar/Editar Productos -->
+            <!-- Modal para Agregar/Editar Productos -->
             <div id="product-form-modal" class="modal" style="display: none;">
                 <div class="modal-content">
-                    <span class="close-button" id="close-modal-button">&times;</span>
+                    <span class="close-button" id="close-product-form-modal-button">&times;</span>
                     <h2 id="modal-title">Agregar/Editar Producto</h2>
                     <form id="product-form">
                         <input type="hidden" id="product-id">
-
                         <div class="form-group">
                             <label for="product-nombre">Nombre:</label>
                             <input type="text" id="product-nombre" required>
@@ -125,7 +124,6 @@
                             <label for="product-precioVenta">Precio Venta ($):</label>
                             <input type="number" id="product-precioVenta" step="0.01" required min="0">
                         </div>
-
                         <div id="admin-price-controls" class="form-group" style="display: none;">
                             <hr>
                             <label>Ajustar Precio por Porcentaje:</label>
@@ -136,21 +134,36 @@
                             </div>
                         </div>
                         <hr>
-
                         <div class="form-actions">
                             <button type="submit" id="save-product-button">💾 Guardar</button>
-                            <button type="button" id="cancel-modal-button">Cancelar</button>
+                            <button type="button" id="cancel-product-form-modal-button">Cancelar</button>
                         </div>
                          <p id="form-feedback" class="feedback-message"></p>
                     </form>
                 </div>
             </div>
-            <!-- Fin del Modal -->
+            <!-- Fin del Modal Agregar/Editar -->
+
+            <!-- *** NUEVO: Modal para mostrar QR Code *** -->
+            <div id="qr-code-modal" class="modal" style="display: none;">
+                <div class="qr-modal-content">
+                    <span class="close-button" id="close-qr-modal-button">&times;</span>
+                    <h3 id="qr-modal-title">QR Producto</h3>
+                    <div id="qr-code-display">
+                        <!-- El QR Code se generará aquí -->
+                    </div>
+                    <div class="qr-modal-actions">
+                        <button id="print-qr-button">🖨️ Imprimir QR</button>
+                        <button id="close-qr-modal-button-alt" class="cancel-button">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+            <!-- *** Fin del Modal QR Code *** -->
+
         </main>
     </div>
 
     <!-- Script de Firebase y Lógica de la App -->
-    <!-- Usamos type="module" para importar funciones de Firebase -->
     <script type="module" src="script.js"></script>
 
 </body>
