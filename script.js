@@ -37,20 +37,12 @@ try {
     } else {
         alert("Error grave al conectar con Firebase. Revisa la consola.");
     }
-    // Detener la ejecución si Firebase no inicializa
     throw new Error("Firebase initialization failed");
 }
 
 // --------------------------------------------------
 // REFERENCIAS A ELEMENTOS DEL DOM
 // --------------------------------------------------
-// Es importante obtener las referencias DESPUÉS de que el DOM esté listo,
-// pero las declararemos aquí y las asignaremos más tarde o dentro de las funciones
-// donde se usen por primera vez, o dentro de initializeEventListeners.
-// Por simplicidad y dado que el script está al final del body, asignarlas aquí
-// *debería* funcionar, pero moverlas dentro de initializeEventListeners es más seguro.
-// Vamos a asignarlas aquí por ahora para mantener la estructura previa.
-
 const loginContainer = document.getElementById('login-container');
 const appContainer = document.getElementById('app-container');
 const loginForm = document.getElementById('login-form');
@@ -58,19 +50,16 @@ const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const loginButton = document.getElementById('login-button');
 const loginError = document.getElementById('login-error');
-
 const userEmailSpan = document.getElementById('user-email');
 const logoutButton = document.getElementById('logout-button');
 const adminControls = document.getElementById('admin-controls');
 const dataEntryControls = document.getElementById('dataentry-controls');
-
 const addProductButton = document.getElementById('add-product-button');
 const searchInput = document.getElementById('search-input');
 const loadingIndicator = document.getElementById('loading-indicator');
 const productsTableContainer = document.getElementById('products-table-container');
 const productsTbody = document.getElementById('products-tbody');
 const noProductsMessage = document.getElementById('no-products-message');
-
 const productFormModal = document.getElementById('product-form-modal');
 const modalTitle = document.getElementById('modal-title');
 const productForm = document.getElementById('product-form');
@@ -88,12 +77,10 @@ const saveProductButton = document.getElementById('save-product-button');
 const formFeedback = document.getElementById('form-feedback');
 const closeProductFormModalButton = document.getElementById('close-product-form-modal-button');
 const cancelProductFormModalButton = document.getElementById('cancel-product-form-modal-button');
-
 const globalPercentageInput = document.getElementById('global-percentage');
 const increaseGlobalButton = document.getElementById('increase-global-button');
 const decreaseGlobalButton = document.getElementById('decrease-global-button');
 const globalUpdateFeedback = document.getElementById('global-update-feedback');
-
 const qrCodeModal = document.getElementById('qr-code-modal');
 const qrModalTitle = document.getElementById('qr-modal-title');
 const qrCodeDisplay = document.getElementById('qr-code-display');
@@ -107,52 +94,35 @@ const closeQrModalButtonAlt = document.getElementById('close-qr-modal-button-alt
 let allProducts = [];
 let currentUserRole = null;
 let productsListener = null;
-// *** NUEVO: Flag para asegurar que los listeners se inicializan una sola vez ***
 let listenersInitialized = false;
 
 // --------------------------------------------------
-// FUNCION PARA INICIALIZAR LISTENERS (SE LLAMARÁ MÁS TARDE)
+// FUNCION PARA INICIALIZAR LISTENERS
 // --------------------------------------------------
 function initializeEventListeners() {
-    // Evitar inicializar múltiples veces
-    if (listenersInitialized) {
-        console.log("Listeners ya inicializados.");
-        return;
-    }
+    if (listenersInitialized) return;
     console.log("Inicializando listeners de eventos...");
 
-    // Listener para Login (asegurarse que el formulario exista)
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    } else {
-        // Esto podría pasar si el usuario ya está logueado y el form no se muestra
-        console.warn("Elemento #login-form no encontrado al añadir listener (puede ser normal).");
-    }
-
-    // Listeners para la App principal (solo si los elementos existen)
-    // Es mejor verificar cada elemento antes de añadir el listener
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
     if (logoutButton) logoutButton.addEventListener('click', handleLogout);
     if (addProductButton) addProductButton.addEventListener('click', () => openProductModalForAdd());
     if (productForm) productForm.addEventListener('submit', handleFormSubmit);
     if (searchInput) searchInput.addEventListener('input', filterAndDisplayProducts);
     if (increaseGlobalButton) increaseGlobalButton.addEventListener('click', () => handleGlobalPriceUpdate(true));
     if (decreaseGlobalButton) decreaseGlobalButton.addEventListener('click', () => handleGlobalPriceUpdate(false));
-
-    // Modal Producto
     if (closeProductFormModalButton) closeProductFormModalButton.addEventListener('click', closeProductModal);
     if (cancelProductFormModalButton) cancelProductFormModalButton.addEventListener('click', closeProductModal);
     if (increasePercentageButton) increasePercentageButton.addEventListener('click', () => adjustPricePercentage(true));
     if (decreasePercentageButton) decreasePercentageButton.addEventListener('click', () => adjustPricePercentage(false));
-
-    // Modal QR
     if (printQrButton) printQrButton.addEventListener('click', handlePrintQr);
     if (closeQrModalButton) closeQrModalButton.addEventListener('click', closeQrModal);
     if (closeQrModalButtonAlt) closeQrModalButtonAlt.addEventListener('click', closeQrModal);
 
-    listenersInitialized = true; // Marcar como inicializados
+    // Listeners para botones de la tabla se añaden dinámicamente en addTableActionListeners()
+
+    listenersInitialized = true;
     console.log("Listeners inicializados.");
 }
-
 
 // --------------------------------------------------
 // MANEJO DE AUTENTICACIÓN Y ESTADO DE LA APP
@@ -165,11 +135,10 @@ onAuthStateChanged(auth, async (user) => {
             currentUserRole = idTokenResult.claims.rol || null;
             console.log('Rol del usuario:', currentUserRole);
             updateUIVisibility(true);
-            userEmailSpan.textContent = user.email;
-            adminControls.style.display = currentUserRole === 'administrador' ? 'block' : 'none';
-            dataEntryControls.style.display = currentUserRole === 'dataEntry' ? 'block' : 'none';
-            // Asegurarse de que los listeners de la app principal estén listos AHORA
-            initializeEventListeners();
+            if (userEmailSpan) userEmailSpan.textContent = user.email;
+            if (adminControls) adminControls.style.display = currentUserRole === 'administrador' ? 'block' : 'none';
+            if (dataEntryControls) dataEntryControls.style.display = currentUserRole === 'dataEntry' ? 'block' : 'none';
+            initializeEventListeners(); // Asegura listeners de la app principal
             loadProducts();
         } catch (error) {
             console.error("Error al obtener token/claims:", error);
@@ -181,19 +150,18 @@ onAuthStateChanged(auth, async (user) => {
         console.log('Usuario no logueado.');
         currentUserRole = null;
         updateUIVisibility(false);
-        userEmailSpan.textContent = '';
-        adminControls.style.display = 'none';
-        dataEntryControls.style.display = 'none';
-        // Asegurarse de que los listeners del login estén listos AHORA
-        initializeEventListeners();
+        if (userEmailSpan) userEmailSpan.textContent = '';
+        if (adminControls) adminControls.style.display = 'none';
+        if (dataEntryControls) dataEntryControls.style.display = 'none';
+        initializeEventListeners(); // Asegura listeners del login
         cleanupProductData();
-        listenersInitialized = false; // Permitir reinicializar si se vuelve a loguear
+        listenersInitialized = false;
     }
 });
 
 function updateUIVisibility(isUserLoggedIn) {
-    loginContainer.style.display = isUserLoggedIn ? 'none' : 'block';
-    appContainer.style.display = isUserLoggedIn ? 'block' : 'none';
+    if (loginContainer) loginContainer.style.display = isUserLoggedIn ? 'none' : 'block';
+    if (appContainer) appContainer.style.display = isUserLoggedIn ? 'block' : 'none';
 }
 
 function cleanupProductData() {
@@ -202,65 +170,32 @@ function cleanupProductData() {
         productsListener();
         productsListener = null;
     }
-    // Verificar si tbody existe antes de limpiar
-    if(productsTbody) productsTbody.innerHTML = '';
+    if (productsTbody) productsTbody.innerHTML = '';
     allProducts = [];
-    if(noProductsMessage) noProductsMessage.style.display = 'none';
-    if(loadingIndicator) loadingIndicator.style.display = 'none';
-    if(searchInput) searchInput.value = '';
+    if (noProductsMessage) noProductsMessage.style.display = 'none';
+    if (loadingIndicator) loadingIndicator.style.display = 'none';
+    if (searchInput) searchInput.value = '';
 }
 
-// --- Funciones de Login/Logout ---
+// --------------------------------------------------
+// FUNCIONES LOGIN / LOGOUT
+// --------------------------------------------------
 function handleLogin(e) {
     e.preventDefault();
-    // Verificar si los elementos existen antes de usarlos
-    if (!emailInput || !passwordInput || !loginButton || !loginError) {
-        console.error("Elementos del formulario de login no encontrados.");
-        return;
-    }
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    loginError.textContent = '';
-    loginError.style.display = 'none';
-    loginButton.disabled = true;
-    loginButton.textContent = 'Entrando...';
-
+    if (!emailInput || !passwordInput || !loginButton || !loginError) return console.error("Elementos del formulario de login no encontrados.");
+    const email = emailInput.value; const password = passwordInput.value;
+    loginError.textContent = ''; loginError.style.display = 'none'; loginButton.disabled = true; loginButton.textContent = 'Entrando...';
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log('Login exitoso para:', userCredential.user.email);
-            passwordInput.value = '';
-            // onAuthStateChanged se encargará de actualizar UI y listeners
-        })
-        .catch((error) => {
-            console.error('Error de inicio de sesión:', error.code, error.message);
-            showLoginError(getFirebaseErrorMessage(error));
-        })
-        .finally(() => {
-            // Verificar si el botón aún existe (podría haber cambiado la UI)
-            if(loginButton) {
-                loginButton.disabled = false;
-                loginButton.textContent = 'Entrar 🔑';
-            }
-        });
+        .then((userCredential) => { console.log('Login exitoso:', userCredential.user.email); if(passwordInput) passwordInput.value = ''; })
+        .catch((error) => { console.error('Error login:', error.code); showLoginError(getFirebaseErrorMessage(error)); })
+        .finally(() => { if(loginButton) { loginButton.disabled = false; loginButton.textContent = 'Entrar 🔑'; } });
 }
 function handleLogout() {
-    signOut(auth).then(() => {
-        console.log('Usuario deslogueado.');
-        // onAuthStateChanged limpiará listeners y UI
-        listenersInitialized = false; // Permitir reinicializar listeners para el login
-    }).catch(error => {
-        console.error('Error al cerrar sesión:', error);
-        alert("Error al cerrar sesión. Intenta de nuevo.");
-    });
+    signOut(auth).then(() => { console.log('Usuario deslogueado.'); listenersInitialized = false; })
+                 .catch(error => { console.error('Error logout:', error); alert("Error al cerrar sesión."); });
 }
-function showLoginError(message) {
-    if (loginError) {
-        loginError.textContent = `❌ ${message}`;
-        loginError.style.display = 'block';
-    }
-}
+function showLoginError(message) { if (loginError) { loginError.textContent = `❌ ${message}`; loginError.style.display = 'block'; } }
 function getFirebaseErrorMessage(error) {
-    // ... (código de la función sin cambios) ...
     switch (error.code) {
         case 'auth/invalid-email': return 'El formato del correo no es válido.';
         case 'auth/user-disabled': return 'Este usuario ha sido deshabilitado.';
@@ -278,67 +213,49 @@ function getFirebaseErrorMessage(error) {
 
 // --- Carga y Visualización ---
 function formatPrice(price, includeSymbol = true) {
-    // ... (código de la función sin cambios) ...
-    const numberPrice = Number(price);
-    if (isNaN(numberPrice)) return "N/A";
-    const options = includeSymbol
-        ? { style: 'currency', currency: 'ARS' }
-        : { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+    const numberPrice = Number(price); if (isNaN(numberPrice)) return "N/A";
+    const options = includeSymbol ? { style: 'currency', currency: 'ARS' } : { minimumFractionDigits: 2, maximumFractionDigits: 2 };
     return numberPrice.toLocaleString('es-AR', options);
 }
-
 function renderProductRow(product) {
-    // ... (código de la función sin cambios, ya incluye botón QR) ...
-    const tr = document.createElement('tr');
-    tr.setAttribute('data-id', product.id);
+    const tr = document.createElement('tr'); tr.setAttribute('data-id', product.id);
     tr.innerHTML = `
-        <td>${product.nombre || 'N/A'}</td>
-        <td>${product.descripcion || ''}</td>
-        <td>${product.material || 'N/A'}</td>
-        <td>${product.medida || 'N/A'}</td>
+        <td>${product.nombre || 'N/A'}</td> <td>${product.descripcion || ''}</td>
+        <td>${product.material || 'N/A'}</td> <td>${product.medida || 'N/A'}</td>
         <td>${formatPrice(product.precioVenta)}</td>
         <td>
             <button class="action-button edit-button" data-id="${product.id}" title="Editar Producto">✏️ Editar</button>
             <button class="action-button qr-button" data-id="${product.id}" title="Generar QR">큐알</button>
-            ${currentUserRole === 'administrador' ? `
-                <button class="action-button delete-button" data-id="${product.id}" title="Eliminar Producto">🗑️ Borrar</button>
-            ` : ''}
-        </td>
-    `;
-    // Verificar si tbody existe antes de añadir
-    if (productsTbody) productsTbody.appendChild(tr);
+            ${currentUserRole === 'administrador' ? `<button class="action-button delete-button" data-id="${product.id}" title="Eliminar Producto">🗑️ Borrar</button>` : ''}
+        </td>`;
+    if (productsTbody) productsTbody.appendChild(tr); else console.error("productsTbody no encontrado para renderizar fila.");
 }
-
 function loadProducts() {
-    // ... (código de la función sin cambios) ...
-    if (productsListener) { productsListener(); }
+    if (productsListener) productsListener();
     console.log("Iniciando carga de productos...");
     if (loadingIndicator) loadingIndicator.style.display = 'block';
     if (productsTableContainer) productsTableContainer.style.display = 'none';
     if (noProductsMessage) noProductsMessage.style.display = 'none';
     if (productsTbody) productsTbody.innerHTML = '';
     allProducts = [];
-    const productosRef = collection(db, "productos");
-    const q = query(productosRef, orderBy("nombre"));
+    const q = query(collection(db, "productos"), orderBy("nombre"));
     productsListener = onSnapshot(q, (querySnapshot) => {
-        console.log("Datos de productos recibidos/actualizados.");
-        allProducts = [];
-        if (productsTbody) productsTbody.innerHTML = '';
+        console.log("Datos de productos recibidos/actualizados."); allProducts = [];
+        if (productsTbody) productsTbody.innerHTML = ''; else return console.error("productsTbody no existe al recibir snapshot.");
         if (querySnapshot.empty) {
             if (noProductsMessage) noProductsMessage.style.display = 'block';
             if (productsTableContainer) productsTableContainer.style.display = 'none';
         } else {
-            querySnapshot.forEach((doc) => { allProducts.push({ id: doc.id, ...doc.data() }); });
+            querySnapshot.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() }));
             filterAndDisplayProducts();
             if (noProductsMessage) noProductsMessage.style.display = 'none';
             if (productsTableContainer) productsTableContainer.style.display = 'block';
         }
         if (loadingIndicator) loadingIndicator.style.display = 'none';
-        // Listeners de tabla se añaden dentro de filterAndDisplayProducts
     }, (error) => {
         console.error("Error al cargar productos: ", error);
         if (loadingIndicator) loadingIndicator.style.display = 'none';
-        if (productsTbody) productsTbody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">❌ Error al cargar productos: ${error.message}</td></tr>`;
+        if (productsTbody) productsTbody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">❌ Error: ${error.message}</td></tr>`;
         if (productsTableContainer) productsTableContainer.style.display = 'block';
         if (noProductsMessage) noProductsMessage.style.display = 'none';
     });
@@ -346,80 +263,50 @@ function loadProducts() {
 
 // --- Filtrado/Búsqueda ---
 function filterAndDisplayProducts() {
-    // Verificar elementos antes de usarlos
-    if (!searchInput || !productsTbody || !allProducts) return;
-
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    productsTbody.innerHTML = ''; // Limpiar tabla
-
-    const filteredProducts = allProducts.filter(product => {
-        // ... (lógica de filtro sin cambios) ...
-        const nombre = (product.nombre || '').toLowerCase();
-        const descripcion = (product.descripcion || '').toLowerCase();
-        const material = (product.material || '').toLowerCase();
-        const medida = (product.medida || '').toLowerCase();
-        return nombre.includes(searchTerm) || descripcion.includes(searchTerm) ||
-               material.includes(searchTerm) || medida.includes(searchTerm);
-    });
-
+    if (!searchInput || !productsTbody || !allProducts) return console.warn("Faltan elementos para filtrar/mostrar productos.");
+    const searchTerm = searchInput.value.toLowerCase().trim(); productsTbody.innerHTML = '';
+    const filteredProducts = allProducts.filter(p => (p.nombre||'').toLowerCase().includes(searchTerm) || (p.descripcion||'').toLowerCase().includes(searchTerm) || (p.material||'').toLowerCase().includes(searchTerm) || (p.medida||'').toLowerCase().includes(searchTerm));
     if (filteredProducts.length === 0) {
-        if (allProducts.length > 0) {
-            productsTbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No se encontraron productos que coincidan con "${searchInput.value}".</td></tr>`;
-            if (productsTableContainer) productsTableContainer.style.display = 'block';
-            if (noProductsMessage) noProductsMessage.style.display = 'none';
-        } else {
-            if (noProductsMessage) noProductsMessage.style.display = 'block';
-            if (productsTableContainer) productsTableContainer.style.display = 'none';
-        }
+        const message = allProducts.length > 0 ? `No se encontraron productos que coincidan con "${searchInput.value}".` : "No hay productos cargados.";
+        productsTbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">${message}</td></tr>`;
+        if(allProducts.length === 0 && noProductsMessage) noProductsMessage.style.display = 'block'; else if (noProductsMessage) noProductsMessage.style.display = 'none';
+        if(allProducts.length === 0 && productsTableContainer) productsTableContainer.style.display = 'none'; else if (productsTableContainer) productsTableContainer.style.display = 'block';
     } else {
-        filteredProducts.forEach(renderProductRow); // Renderiza las filas
+        filteredProducts.forEach(renderProductRow);
         if (noProductsMessage) noProductsMessage.style.display = 'none';
         if (productsTableContainer) productsTableContainer.style.display = 'block';
     }
-    addTableActionListeners(); // Re-aplicar listeners a los botones nuevos/existentes
+    addTableActionListeners();
 }
 
 // --- Listeners para botones de la tabla ---
 function addTableActionListeners() {
-    // Verificar tbody antes de buscar botones
     if (!productsTbody) return;
-
-    productsTbody.querySelectorAll('.edit-button').forEach(button => {
-        button.removeEventListener('click', handleEditClick); // Prevenir duplicados
-        button.addEventListener('click', handleEditClick);
-    });
-    productsTbody.querySelectorAll('.qr-button').forEach(button => {
-        button.removeEventListener('click', handleQrClick); // Prevenir duplicados
-        button.addEventListener('click', handleQrClick);
-    });
-    productsTbody.querySelectorAll('.delete-button').forEach(button => {
-        button.removeEventListener('click', handleDeleteClick); // Prevenir duplicados
-        button.addEventListener('click', handleDeleteClick);
-    });
+    const addSafeListener = (selector, event, handler) => {
+        productsTbody.querySelectorAll(selector).forEach(button => {
+            button.removeEventListener(event, handler); // Evitar duplicados
+            button.addEventListener(event, handler);
+        });
+    };
+    addSafeListener('.edit-button', 'click', handleEditClick);
+    addSafeListener('.qr-button', 'click', handleQrClick);
+    addSafeListener('.delete-button', 'click', handleDeleteClick);
 }
-// Handlers (sin cambios, solo llaman a la función principal)
-function handleEditClick(event) { const productId = event.target.closest('button').dataset.id; openProductModalForEdit(productId); }
-function handleDeleteClick(event) { const productId = event.target.closest('button').dataset.id; confirmDeleteProduct(productId); }
-function handleQrClick(event) { const productId = event.target.closest('button').dataset.id; openQrModal(productId); }
+function handleEditClick(event) { const id = event.target.closest('button').dataset.id; if(id) openProductModalForEdit(id); }
+function handleDeleteClick(event) { const id = event.target.closest('button').dataset.id; if(id) confirmDeleteProduct(id); }
+function handleQrClick(event) { const id = event.target.closest('button').dataset.id; if(id) openQrModal(id); }
 
 
 // --- Funciones Modal Producto ---
-function openProductModalForAdd() { /* ... sin cambios ... */ }
-function openProductModalForEdit(productId) { /* ... sin cambios ... */ }
-function closeProductModal() { /* ... sin cambios ... */ }
-async function handleFormSubmit(event) { /* ... sin cambios ... */ }
-function showFormFeedback(message, type = "error") { /* ... sin cambios ... */ }
-function adjustPricePercentage(increase) { /* ... sin cambios ... */ }
-// --- Funciones Modal Producto --- (Incluyendo verificación de elementos)
 function openProductModalForAdd() {
-    if (!productForm || !productIdInput || !modalTitle || !formFeedback || !adminPriceControls || !precioVentaInput || !saveProductButton || !productFormModal || !nombreInput) return console.error("Faltan elementos del modal de producto.");
+    if (!productForm || !modalTitle || !formFeedback || !adminPriceControls || !precioVentaInput || !saveProductButton || !productFormModal || !nombreInput || !productIdInput) return console.error("Faltan elementos del modal de producto.");
     productForm.reset(); productIdInput.value = ''; modalTitle.textContent = '➕ Agregar Nuevo Producto';
     formFeedback.textContent = ''; formFeedback.style.display = 'none'; adminPriceControls.style.display = 'none';
     precioVentaInput.disabled = false; saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar Nuevo';
     productFormModal.style.display = 'block'; nombreInput.focus();
 }
 function openProductModalForEdit(productId) {
-    if (!productForm || !productIdInput || !modalTitle || !formFeedback || !nombreInput || !descripcionInput || !materialInput || !medidaInput || !precioVentaInput || !adminPriceControls || !percentageInput || !saveProductButton || !productFormModal) return console.error("Faltan elementos del modal de producto.");
+    if (!productForm || !modalTitle || !formFeedback || !nombreInput || !descripcionInput || !materialInput || !medidaInput || !precioVentaInput || !adminPriceControls || !percentageInput || !saveProductButton || !productFormModal || !productIdInput) return console.error("Faltan elementos del modal de producto.");
     const product = allProducts.find(p => p.id === productId); if (!product) return alert("Error: Producto no encontrado.");
     productForm.reset(); productIdInput.value = productId; modalTitle.textContent = '✏️ Editar Producto';
     formFeedback.textContent = ''; formFeedback.style.display = 'none';
@@ -454,9 +341,6 @@ function adjustPricePercentage(increase) {
 }
 
 // --- Borrado de Productos ---
-function confirmDeleteProduct(productId) { /* ... sin cambios ... */ }
-async function deleteProductFromFirestore(productId, productName) { /* ... sin cambios ... */ }
-// --- Borrado de Productos ---
 function confirmDeleteProduct(productId) {
     const product = allProducts.find(p => p.id === productId); const productName = product ? product.nombre : 'este producto';
     if (window.confirm(`❓ ¿Eliminar "${productName}"?\n\n⚠️ ¡Acción irreversible!`)) { deleteProductFromFirestore(productId, productName); } else { console.log("Borrado cancelado."); }
@@ -466,12 +350,7 @@ async function deleteProductFromFirestore(productId, productName) {
     try { await deleteDoc(productRef); console.log(`✅ Producto ${productId} eliminado.`); showTemporaryFeedback(`Eliminado: ${productName || productId}`, 'success'); } catch (error) { console.error(`❌ Error al eliminar ${productId}: `, error); let userMessage = `Error: ${error.message}`; if (error.code === 'permission-denied') userMessage = "Error: Permiso denegado."; alert(userMessage); }
 }
 
-
 // --- Actualización Global Precios ---
-async function handleGlobalPriceUpdate(increase) { /* ... sin cambios ... */ }
-function showGlobalFeedback(message, type = "info") { /* ... sin cambios ... */ }
-function setGlobalControlsDisabled(disabled) { /* ... sin cambios ... */ }
-// --- Actualización Global Precios --- (Incluyendo verificación de elementos)
 async function handleGlobalPriceUpdate(increase) {
     if (!globalPercentageInput || !globalUpdateFeedback || !increaseGlobalButton || !decreaseGlobalButton) return console.error("Faltan elementos de control global.");
     const percentage = parseFloat(globalPercentageInput.value); if (isNaN(percentage) || percentage === 0) { showGlobalFeedback("Introduce un porcentaje válido.", "error"); return; }
@@ -486,72 +365,27 @@ function setGlobalControlsDisabled(disabled) { if (!globalPercentageInput || !in
 
 // --- Funciones Modal QR Code ---
 function openQrModal(productId) {
-    // Verificar elementos del modal QR
     if (!qrModalTitle || !qrCodeDisplay || !qrCodeModal) return console.error("Faltan elementos del modal QR.");
-
-    const product = allProducts.find(p => p.id === productId);
-    if (!product) { alert("Error: Producto no encontrado para QR."); return; }
-
-    qrModalTitle.textContent = `QR: ${product.nombre}`;
-    qrCodeDisplay.innerHTML = ''; // Limpiar
-
-    // Usar formatPrice sin símbolo para QR, pero añadirlo manualmente
-    const priceText = formatPrice(product.precioVenta, false);
-    const qrText = `Producto: ${product.nombre}\nPrecio: $${priceText}`;
-
-    try {
-        // Asegurarse que la librería QRCode esté disponible globalmente
-        if (typeof QRCode === 'undefined') {
-             throw new Error("Librería QRCode no encontrada.");
-        }
-        new QRCode(qrCodeDisplay, {
-            text: qrText, width: 256, height: 256,
-            colorDark: "#000000", colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-        console.log("QR generado para:", product.nombre);
-        qrCodeModal.style.display = 'block';
-    } catch (error) {
-        console.error("Error al generar QR:", error);
-        alert("Error al generar código QR.");
-        qrCodeDisplay.innerHTML = '<p style="color:red;">Error al generar QR.</p>';
-        qrCodeModal.style.display = 'block';
-    }
+    const product = allProducts.find(p => p.id === productId); if (!product) { alert("Error: Producto no encontrado para QR."); return; }
+    qrModalTitle.textContent = `QR: ${product.nombre}`; qrCodeDisplay.innerHTML = '';
+    const priceText = formatPrice(product.precioVenta, false); const qrText = `Producto: ${product.nombre}\nPrecio: $${priceText}`;
+    try { if (typeof QRCode === 'undefined') throw new Error("Librería QRCode no encontrada."); new QRCode(qrCodeDisplay, { text: qrText, width: 256, height: 256, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H }); console.log("QR generado para:", product.nombre); qrCodeModal.style.display = 'block'; } catch (error) { console.error("Error al generar QR:", error); alert("Error al generar código QR."); qrCodeDisplay.innerHTML = '<p style="color:red;">Error al generar QR.</p>'; qrCodeModal.style.display = 'block'; }
 }
-
-function closeQrModal() {
-    if (qrCodeModal) qrCodeModal.style.display = 'none';
-    if (qrCodeDisplay) qrCodeDisplay.innerHTML = ''; // Limpiar
-}
-
+function closeQrModal() { if (qrCodeModal) qrCodeModal.style.display = 'none'; if (qrCodeDisplay) qrCodeDisplay.innerHTML = ''; }
 function handlePrintQr() {
-    // Verificar elementos antes de ocultar/mostrar
     const buttonsToToggle = [printQrButton, closeQrModalButtonAlt, closeQrModalButton];
-    if (buttonsToToggle.some(btn => !btn)) {
-        console.warn("Faltan botones del modal QR para ocultar/mostrar al imprimir.");
-    }
-
+    if (buttonsToToggle.some(btn => !btn)) console.warn("Faltan botones del modal QR para ocultar/mostrar al imprimir.");
     buttonsToToggle.forEach(btn => { if (btn) btn.style.display = 'none'; });
     window.print();
-    setTimeout(() => {
-        if(printQrButton) printQrButton.style.display = 'inline-block';
-        if(closeQrModalButtonAlt) closeQrModalButtonAlt.style.display = 'inline-block';
-        if(closeQrModalButton) closeQrModalButton.style.display = 'block';
-    }, 1000);
+    setTimeout(() => { if(printQrButton) printQrButton.style.display = 'inline-block'; if(closeQrModalButtonAlt) closeQrModalButtonAlt.style.display = 'inline-block'; if(closeQrModalButton) closeQrModalButton.style.display = 'block'; }, 1000);
 }
 
 // --- Feedback Temporal ---
 function showTemporaryFeedback(message, type = 'info', duration = 3000) {
-    // ... (código de la función sin cambios) ...
     const feedbackElement = document.createElement('div'); feedbackElement.className = `temporary-feedback ${type}`; feedbackElement.textContent = message;
     if(document.body) { document.body.appendChild(feedbackElement); setTimeout(() => { feedbackElement.remove(); }, duration); } else { console.warn("Feedback temporal no mostrado: Body no encontrado aún."); }
 }
 
-
 // --- Fin del script ---
-// Llamar a initializeEventListeners una vez al cargar el script
-// Esto asegura que los listeners básicos (como el del login) estén listos.
-// Los listeners de la app principal se re-verificarán/añadirán en onAuthStateChanged.
-initializeEventListeners();
-
+initializeEventListeners(); // Llamar una vez al inicio para listeners básicos (login)
 console.log("Script principal cargado.");
