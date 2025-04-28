@@ -102,7 +102,6 @@ let listenersInitialized = false;
 function initializeEventListeners() {
     if (listenersInitialized) return;
     console.log("Inicializando listeners de eventos...");
-
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
     if (logoutButton) logoutButton.addEventListener('click', handleLogout);
     if (addProductButton) addProductButton.addEventListener('click', () => openProductModalForAdd());
@@ -117,7 +116,6 @@ function initializeEventListeners() {
     if (printQrButton) printQrButton.addEventListener('click', handlePrintQr);
     if (closeQrModalButton) closeQrModalButton.addEventListener('click', closeQrModal);
     if (closeQrModalButtonAlt) closeQrModalButtonAlt.addEventListener('click', closeQrModal);
-
     listenersInitialized = true;
     console.log("Listeners inicializados.");
 }
@@ -139,65 +137,34 @@ onAuthStateChanged(auth, async (user) => {
             initializeEventListeners();
             loadProducts();
         } catch (error) {
-            console.error("Error al obtener token/claims:", error);
-            currentUserRole = null;
-            handleLogout();
-            showLoginError("Error al verificar permisos. Sesión cerrada.");
+            console.error("Error al obtener token/claims:", error); currentUserRole = null; handleLogout(); showLoginError("Error permisos.");
         }
     } else {
-        console.log('Usuario no logueado.');
-        currentUserRole = null;
-        updateUIVisibility(false);
-        if (userEmailSpan) userEmailSpan.textContent = '';
-        if (adminControls) adminControls.style.display = 'none';
-        if (dataEntryControls) dataEntryControls.style.display = 'none';
-        initializeEventListeners();
-        cleanupProductData();
-        listenersInitialized = false;
+        console.log('Usuario no logueado.'); currentUserRole = null; updateUIVisibility(false);
+        if (userEmailSpan) userEmailSpan.textContent = ''; if (adminControls) adminControls.style.display = 'none'; if (dataEntryControls) dataEntryControls.style.display = 'none';
+        initializeEventListeners(); cleanupProductData(); listenersInitialized = false;
     }
 });
 
-function updateUIVisibility(isUserLoggedIn) {
-    if (loginContainer) loginContainer.style.display = isUserLoggedIn ? 'none' : 'block';
-    if (appContainer) appContainer.style.display = isUserLoggedIn ? 'block' : 'none';
-}
-
-function cleanupProductData() {
-    if (productsListener) { console.log("Deteniendo listener."); productsListener(); productsListener = null; }
-    if (productsTbody) productsTbody.innerHTML = '';
-    allProducts = [];
-    if (noProductsMessage) noProductsMessage.style.display = 'none';
-    if (loadingIndicator) loadingIndicator.style.display = 'none';
-    if (searchInput) searchInput.value = '';
-}
+function updateUIVisibility(isUserLoggedIn) { if (loginContainer) loginContainer.style.display = isUserLoggedIn ? 'none' : 'block'; if (appContainer) appContainer.style.display = isUserLoggedIn ? 'block' : 'none'; }
+function cleanupProductData() { if (productsListener) { console.log("Deteniendo listener."); productsListener(); productsListener = null; } if (productsTbody) productsTbody.innerHTML = ''; allProducts = []; if (noProductsMessage) noProductsMessage.style.display = 'none'; if (loadingIndicator) loadingIndicator.style.display = 'none'; if (searchInput) searchInput.value = ''; }
 
 // --------------------------------------------------
 // FUNCIONES LOGIN / LOGOUT
 // --------------------------------------------------
-function handleLogin(e) { /* ... sin cambios ... */ }
-function handleLogout() { /* ... sin cambios ... */ }
-function showLoginError(message) { /* ... sin cambios ... */ }
-function getFirebaseErrorMessage(error) { /* ... sin cambios ... */ }
-
-// Funciones Login/Logout (sin cambios relevantes, solo el cuerpo resumido)
-function handleLogin(e) { e.preventDefault(); if (!emailInput || !passwordInput || !loginButton || !loginError) return console.error("Login elements missing."); const email = emailInput.value; const password = passwordInput.value; loginError.textContent = ''; loginError.style.display = 'none'; loginButton.disabled = true; loginButton.textContent = 'Entrando...'; signInWithEmailAndPassword(auth, email, password).then(uc => { console.log('Login OK:', uc.user.email); if(passwordInput) passwordInput.value = ''; }).catch(err => { console.error('Login Error:', err.code); showLoginError(getFirebaseErrorMessage(err)); }).finally(() => { if(loginButton) { loginButton.disabled = false; loginButton.textContent = 'Entrar 🔑'; } }); }
+function handleLogin(e) { e.preventDefault(); if (!emailInput || !passwordInput || !loginButton || !loginError) return; const email = emailInput.value; const password = passwordInput.value; loginError.textContent = ''; loginError.style.display = 'none'; loginButton.disabled = true; loginButton.textContent = 'Entrando...'; signInWithEmailAndPassword(auth, email, password).then(uc => { console.log('Login OK:', uc.user.email); if(passwordInput) passwordInput.value = ''; }).catch(err => { console.error('Login Error:', err.code); showLoginError(getFirebaseErrorMessage(err)); }).finally(() => { if(loginButton) { loginButton.disabled = false; loginButton.textContent = 'Entrar 🔑'; } }); }
 function handleLogout() { signOut(auth).then(() => { console.log('Logout OK.'); listenersInitialized = false; }).catch(err => { console.error('Logout Error:', err); alert("Error al cerrar sesión."); }); }
 function showLoginError(message) { if (loginError) { loginError.textContent = `❌ ${message}`; loginError.style.display = 'block'; } }
-function getFirebaseErrorMessage(error) { switch (error.code) { case 'auth/invalid-email': return 'Correo inválido.'; case 'auth/user-disabled': return 'Usuario deshabilitado.'; case 'auth/user-not-found': return 'Usuario no encontrado.'; case 'auth/wrong-password': return 'Contraseña incorrecta.'; case 'auth/invalid-credential': return 'Credenciales incorrectas.'; case 'auth/too-many-requests': return 'Demasiados intentos. Intenta más tarde.'; default: return `Error (${error.code}).`; } }
-
+function getFirebaseErrorMessage(error) { switch (error.code) { case 'auth/invalid-email': return 'Correo inválido.'; case 'auth/user-disabled': return 'Usuario deshabilitado.'; case 'auth/user-not-found': return 'Usuario no encontrado.'; case 'auth/wrong-password': return 'Contraseña incorrecta.'; case 'auth/invalid-credential': return 'Credenciales incorrectas.'; case 'auth/too-many-requests': return 'Demasiados intentos.'; default: return `Error (${error.code}).`; } }
 
 // --------------------------------------------------
 // LÓGICA DE GESTIÓN DE PRODUCTOS
 // --------------------------------------------------
 
 // --- Carga y Visualización ---
-function formatPrice(price, includeSymbol = true) {
-    const numberPrice = Number(price); if (isNaN(numberPrice)) return "N/A";
-    const options = includeSymbol ? { style: 'currency', currency: 'ARS' } : { minimumFractionDigits: 2, maximumFractionDigits: 2 };
-    return numberPrice.toLocaleString('es-AR', options);
-}
+function formatPrice(price, includeSymbol = true) { const num = Number(price); if (isNaN(num)) return "N/A"; const opt = includeSymbol ? { style: 'currency', currency: 'ARS' } : { minimumFractionDigits: 2, maximumFractionDigits: 2 }; return num.toLocaleString('es-AR', opt); }
 
-// *** MODIFICADO: Cambiado texto del botón QR ***
+// *** CORREGIDO: Texto del botón QR ***
 function renderProductRow(product) {
     const tr = document.createElement('tr'); tr.setAttribute('data-id', product.id);
     tr.innerHTML = `
@@ -206,93 +173,63 @@ function renderProductRow(product) {
         <td>${formatPrice(product.precioVenta)}</td>
         <td>
             <button class="action-button edit-button" data-id="${product.id}" title="Editar Producto">✏️ Editar</button>
-            <button class="action-button qr-button" data-id="${product.id}" title="Generar QR">QR</button> {/* Cambiado texto */}
+            <button class="action-button qr-button" data-id="${product.id}" title="Generar QR">QR</button> {/* CORREGIDO */}
             ${currentUserRole === 'administrador' ? `<button class="action-button delete-button" data-id="${product.id}" title="Eliminar Producto">🗑️ Borrar</button>` : ''}
         </td>`;
-    if (productsTbody) productsTbody.appendChild(tr); else console.error("productsTbody no encontrado para renderizar fila.");
+    if (productsTbody) productsTbody.appendChild(tr); else console.error("tbody missing");
 }
 
-function loadProducts() { /* ... sin cambios ... */ }
-// Función loadProducts (sin cambios relevantes, solo cuerpo resumido)
-function loadProducts() { if (productsListener) productsListener(); console.log("Loading products..."); if (loadingIndicator) loadingIndicator.style.display = 'block'; if (productsTableContainer) productsTableContainer.style.display = 'none'; if (noProductsMessage) noProductsMessage.style.display = 'none'; if (productsTbody) productsTbody.innerHTML = ''; allProducts = []; const q = query(collection(db, "productos"), orderBy("nombre")); productsListener = onSnapshot(q, (snap) => { console.log("Products updated."); allProducts = []; if (!productsTbody) return console.error("tbody missing on snapshot."); productsTbody.innerHTML = ''; if (snap.empty) { if (noProductsMessage) noProductsMessage.style.display = 'block'; if (productsTableContainer) productsTableContainer.style.display = 'none'; } else { snap.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() })); filterAndDisplayProducts(); if (noProductsMessage) noProductsMessage.style.display = 'none'; if (productsTableContainer) productsTableContainer.style.display = 'block'; } if (loadingIndicator) loadingIndicator.style.display = 'none'; }, (err) => { console.error("Load products error: ", err); if (loadingIndicator) loadingIndicator.style.display = 'none'; if (productsTbody) productsTbody.innerHTML = `<tr><td colspan="6" style="color: red;">❌ Error: ${err.message}</td></tr>`; if (productsTableContainer) productsTableContainer.style.display = 'block'; if (noProductsMessage) noProductsMessage.style.display = 'none'; }); }
-
+function loadProducts() { if (productsListener) productsListener(); console.log("Loading products..."); if (loadingIndicator) loadingIndicator.style.display = 'block'; if (productsTableContainer) productsTableContainer.style.display = 'none'; if (noProductsMessage) noProductsMessage.style.display = 'none'; if (productsTbody) productsTbody.innerHTML = ''; allProducts = []; const q = query(collection(db, "productos"), orderBy("nombre")); productsListener = onSnapshot(q, (snap) => { console.log("Products updated."); allProducts = []; if (!productsTbody) return; productsTbody.innerHTML = ''; if (snap.empty) { if (noProductsMessage) noProductsMessage.style.display = 'block'; if (productsTableContainer) productsTableContainer.style.display = 'none'; } else { snap.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() })); filterAndDisplayProducts(); if (noProductsMessage) noProductsMessage.style.display = 'none'; if (productsTableContainer) productsTableContainer.style.display = 'block'; } if (loadingIndicator) loadingIndicator.style.display = 'none'; }, (err) => { console.error("Load error: ", err); if (loadingIndicator) loadingIndicator.style.display = 'none'; if (productsTbody) productsTbody.innerHTML = `<tr><td colspan="6" style="color: red;">❌ Error: ${err.message}</td></tr>`; if (productsTableContainer) productsTableContainer.style.display = 'block'; if (noProductsMessage) noProductsMessage.style.display = 'none'; }); }
 
 // --- Filtrado/Búsqueda ---
-function filterAndDisplayProducts() { /* ... sin cambios ... */ }
-// Función filterAndDisplayProducts (sin cambios relevantes, solo cuerpo resumido)
 function filterAndDisplayProducts() { if (!searchInput || !productsTbody || !allProducts) return; const term = searchInput.value.toLowerCase().trim(); productsTbody.innerHTML = ''; const filtered = allProducts.filter(p => (p.nombre||'').toLowerCase().includes(term) || (p.descripcion||'').toLowerCase().includes(term) || (p.material||'').toLowerCase().includes(term) || (p.medida||'').toLowerCase().includes(term)); if (filtered.length === 0) { const msg = allProducts.length > 0 ? `No hay coincidencias para "${searchInput.value}".` : "No hay productos."; productsTbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">${msg}</td></tr>`; if(allProducts.length === 0 && noProductsMessage) noProductsMessage.style.display = 'block'; else if (noProductsMessage) noProductsMessage.style.display = 'none'; if(allProducts.length === 0 && productsTableContainer) productsTableContainer.style.display = 'none'; else if (productsTableContainer) productsTableContainer.style.display = 'block'; } else { filtered.forEach(renderProductRow); if (noProductsMessage) noProductsMessage.style.display = 'none'; if (productsTableContainer) productsTableContainer.style.display = 'block'; } addTableActionListeners(); }
 
-
 // --- Listeners para botones de la tabla ---
-function addTableActionListeners() { /* ... sin cambios ... */ }
-// Función addTableActionListeners (sin cambios relevantes, solo cuerpo resumido)
-function addTableActionListeners() { if (!productsTbody) return; const addSafeListener = (sel, ev, hnd) => { productsTbody.querySelectorAll(sel).forEach(btn => { btn.removeEventListener(ev, hnd); btn.addEventListener(ev, hnd); }); }; addSafeListener('.edit-button', 'click', handleEditClick); addSafeListener('.qr-button', 'click', handleQrClick); addSafeListener('.delete-button', 'click', handleDeleteClick); }
-function handleEditClick(event) { const id = event.target.closest('button').dataset.id; if(id) openProductModalForEdit(id); }
-function handleDeleteClick(event) { const id = event.target.closest('button').dataset.id; if(id) confirmDeleteProduct(id); }
-function handleQrClick(event) { const id = event.target.closest('button').dataset.id; if(id) openQrModal(id); }
-
+function addTableActionListeners() { if (!productsTbody) return; const addSafe = (sel, ev, hnd) => { productsTbody.querySelectorAll(sel).forEach(b => { b.removeEventListener(ev, hnd); b.addEventListener(ev, hnd); }); }; addSafe('.edit-button', 'click', handleEditClick); addSafe('.qr-button', 'click', handleQrClick); addSafe('.delete-button', 'click', handleDeleteClick); }
+function handleEditClick(e) { const id = e.target.closest('button').dataset.id; if(id) openProductModalForEdit(id); }
+function handleDeleteClick(e) { const id = e.target.closest('button').dataset.id; if(id) confirmDeleteProduct(id); }
+function handleQrClick(e) { const id = e.target.closest('button').dataset.id; if(id) openQrModal(id); }
 
 // --- Funciones Modal Producto ---
-function openProductModalForAdd() { /* ... sin cambios ... */ }
-function openProductModalForEdit(productId) { /* ... sin cambios ... */ }
-function closeProductModal() { /* ... sin cambios ... */ }
-async function handleFormSubmit(event) { /* ... sin cambios ... */ }
-function showFormFeedback(message, type = "error") { /* ... sin cambios ... */ }
-function adjustPricePercentage(increase) { /* ... sin cambios ... */ }
-// Funciones Modal Producto (sin cambios relevantes, solo cuerpos resumidos)
-function openProductModalForAdd() { if (!productForm || !modalTitle || !formFeedback || !adminPriceControls || !precioVentaInput || !saveProductButton || !productFormModal || !nombreInput || !productIdInput) return console.error("Missing product modal elements."); productForm.reset(); productIdInput.value = ''; modalTitle.textContent = '➕ Agregar Nuevo Producto'; formFeedback.textContent = ''; formFeedback.style.display = 'none'; adminPriceControls.style.display = 'none'; precioVentaInput.disabled = false; saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar Nuevo'; productFormModal.style.display = 'block'; nombreInput.focus(); }
-function openProductModalForEdit(productId) { if (!productForm || !modalTitle || !formFeedback || !nombreInput || !descripcionInput || !materialInput || !medidaInput || !precioVentaInput || !adminPriceControls || !percentageInput || !saveProductButton || !productFormModal || !productIdInput) return console.error("Missing product modal elements."); const product = allProducts.find(p => p.id === productId); if (!product) return alert("Error: Producto no encontrado."); productForm.reset(); productIdInput.value = productId; modalTitle.textContent = '✏️ Editar Producto'; formFeedback.textContent = ''; formFeedback.style.display = 'none'; nombreInput.value = product.nombre || ''; descripcionInput.value = product.descripcion || ''; materialInput.value = product.material || ''; medidaInput.value = product.medida || ''; precioVentaInput.value = product.precioVenta !== undefined ? product.precioVenta : ''; if (currentUserRole === 'administrador') { precioVentaInput.disabled = false; adminPriceControls.style.display = 'block'; percentageInput.value = ''; } else { precioVentaInput.disabled = true; adminPriceControls.style.display = 'none'; } saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar Cambios'; productFormModal.style.display = 'block'; nombreInput.focus(); }
+function openProductModalForAdd() { if (!productForm || !modalTitle || !formFeedback || !adminPriceControls || !precioVentaInput || !saveProductButton || !productFormModal || !nombreInput || !productIdInput) return; productForm.reset(); productIdInput.value = ''; modalTitle.textContent = '➕ Agregar'; formFeedback.textContent = ''; formFeedback.style.display = 'none'; adminPriceControls.style.display = 'none'; precioVentaInput.disabled = false; saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar'; productFormModal.style.display = 'block'; nombreInput.focus(); }
+function openProductModalForEdit(productId) { if (!productForm || !modalTitle || !formFeedback || !nombreInput || !descripcionInput || !materialInput || !medidaInput || !precioVentaInput || !adminPriceControls || !percentageInput || !saveProductButton || !productFormModal || !productIdInput) return; const product = allProducts.find(p => p.id === productId); if (!product) return alert("Error: Producto no encontrado."); productForm.reset(); productIdInput.value = productId; modalTitle.textContent = '✏️ Editar'; formFeedback.textContent = ''; formFeedback.style.display = 'none'; nombreInput.value = product.nombre || ''; descripcionInput.value = product.descripcion || ''; materialInput.value = product.material || ''; medidaInput.value = product.medida || ''; precioVentaInput.value = product.precioVenta !== undefined ? product.precioVenta : ''; if (currentUserRole === 'administrador') { precioVentaInput.disabled = false; adminPriceControls.style.display = 'block'; percentageInput.value = ''; } else { precioVentaInput.disabled = true; adminPriceControls.style.display = 'none'; } saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar'; productFormModal.style.display = 'block'; nombreInput.focus(); }
 function closeProductModal() { if (!productFormModal || !productForm || !formFeedback || !productIdInput) return; productFormModal.style.display = 'none'; productForm.reset(); formFeedback.textContent = ''; formFeedback.style.display = 'none'; productIdInput.value = ''; }
-async function handleFormSubmit(event) { event.preventDefault(); if (!saveProductButton || !productIdInput || !nombreInput || !precioVentaInput || !descripcionInput || !materialInput || !medidaInput) return console.error("Missing form elements."); saveProductButton.disabled = true; saveProductButton.textContent = 'Guardando... 🔄'; if(formFeedback){ formFeedback.textContent = ''; formFeedback.style.display = 'none';} const productId = productIdInput.value; const price = parseFloat(precioVentaInput.value); if (!nombreInput.value.trim()) { showFormFeedback("Nombre obligatorio.", "error"); saveProductButton.disabled = false; saveProductButton.textContent = productId ? '💾 Guardar Cambios' : '💾 Guardar Nuevo'; return; } if (isNaN(price) || price < 0) { showFormFeedback("Precio inválido.", "error"); saveProductButton.disabled = false; saveProductButton.textContent = productId ? '💾 Guardar Cambios' : '💾 Guardar Nuevo'; return; } let productData = { nombre: nombreInput.value.trim(), descripcion: descripcionInput.value.trim(), material: materialInput.value.trim(), medida: medidaInput.value.trim(), fechaModificacion: serverTimestamp() }; try { if (productId) { const productRef = doc(db, "productos", productId); if (currentUserRole === 'administrador') { productData.precioVenta = price; } await updateDoc(productRef, productData); showFormFeedback("Actualizado.", "success"); } else { productData.precioVenta = price; productData.fechaCreacion = serverTimestamp(); await addDoc(collection(db, "productos"), productData); showFormFeedback("Agregado.", "success"); } setTimeout(closeProductModal, 1500); } catch (error) { console.error("Save error:", error); let msg = `Error: ${error.message}`; if (error.code === 'permission-denied') msg = "Error: Permiso denegado."; showFormFeedback(msg, "error"); saveProductButton.disabled = false; saveProductButton.textContent = productId ? '💾 Guardar Cambios' : '💾 Guardar Nuevo'; } }
+async function handleFormSubmit(event) { event.preventDefault(); if (!saveProductButton || !productIdInput || !nombreInput || !precioVentaInput || !descripcionInput || !materialInput || !medidaInput) return; saveProductButton.disabled = true; saveProductButton.textContent = 'Guardando...'; if(formFeedback){ formFeedback.textContent = ''; formFeedback.style.display = 'none';} const productId = productIdInput.value; const price = parseFloat(precioVentaInput.value); if (!nombreInput.value.trim()) { showFormFeedback("Nombre obligatorio.", "error"); saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar'; return; } if (isNaN(price) || price < 0) { showFormFeedback("Precio inválido.", "error"); saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar'; return; } let productData = { nombre: nombreInput.value.trim(), descripcion: descripcionInput.value.trim(), material: materialInput.value.trim(), medida: medidaInput.value.trim(), fechaModificacion: serverTimestamp() }; try { if (productId) { const ref = doc(db, "productos", productId); if (currentUserRole === 'administrador') { productData.precioVenta = price; } await updateDoc(ref, productData); showFormFeedback("Actualizado.", "success"); } else { productData.precioVenta = price; productData.fechaCreacion = serverTimestamp(); await addDoc(collection(db, "productos"), productData); showFormFeedback("Agregado.", "success"); } setTimeout(closeProductModal, 1500); } catch (error) { console.error("Save error:", error); let msg = `Error: ${error.message}`; if (error.code === 'permission-denied') msg = "Error: Permiso denegado."; showFormFeedback(msg, "error"); saveProductButton.disabled = false; saveProductButton.textContent = '💾 Guardar'; } }
 function showFormFeedback(message, type = "error") { if (!formFeedback) return; formFeedback.textContent = message; formFeedback.className = `feedback-message ${type}`; formFeedback.style.display = 'block'; }
 function adjustPricePercentage(increase) { if (!percentageInput || !precioVentaInput) return; const perc = parseFloat(percentageInput.value); const curr = parseFloat(precioVentaInput.value); if (isNaN(perc) || perc <= 0) { alert("Porcentaje inválido."); percentageInput.focus(); return; } if (isNaN(curr)) { alert("Precio actual inválido."); precioVentaInput.focus(); return; } let nP = increase ? curr * (1 + perc / 100) : curr * (1 - perc / 100); nP = Math.max(0, Math.round(nP * 100) / 100); precioVentaInput.value = nP.toFixed(2); percentageInput.value = ''; }
 
-
 // --- Borrado de Productos ---
-function confirmDeleteProduct(productId) { /* ... sin cambios ... */ }
-async function deleteProductFromFirestore(productId, productName) { /* ... sin cambios ... */ }
-// Funciones Borrado (sin cambios relevantes, solo cuerpos resumidos)
-function confirmDeleteProduct(productId) { const product = allProducts.find(p => p.id === productId); const name = product ? product.nombre : 'este producto'; if (window.confirm(`❓ ¿Eliminar "${name}"?\n\n⚠️ ¡Irreversible!`)) { deleteProductFromFirestore(productId, name); } else { console.log("Delete cancelled."); } }
+function confirmDeleteProduct(productId) { const product = allProducts.find(p => p.id === productId); const name = product ? product.nombre : 'este'; if (window.confirm(`❓ ¿Eliminar "${name}"?\n\n⚠️ ¡Irreversible!`)) { deleteProductFromFirestore(productId, name); } else { console.log("Delete cancelled."); } }
 async function deleteProductFromFirestore(productId, productName) { console.log(`Deleting ${productId}...`); const ref = doc(db, "productos", productId); try { await deleteDoc(ref); console.log(`✅ Deleted ${productId}.`); showTemporaryFeedback(`Eliminado: ${productName || productId}`, 'success'); } catch (error) { console.error(`❌ Delete error ${productId}: `, error); let msg = `Error: ${error.message}`; if (error.code === 'permission-denied') msg = "Error: Permiso denegado."; alert(msg); } }
 
-
 // --- Actualización Global Precios ---
-async function handleGlobalPriceUpdate(increase) { /* ... sin cambios ... */ }
-function showGlobalFeedback(message, type = "info") { /* ... sin cambios ... */ }
-function setGlobalControlsDisabled(disabled) { /* ... sin cambios ... */ }
-// Funciones Global Update (sin cambios relevantes, solo cuerpos resumidos)
-async function handleGlobalPriceUpdate(increase) { if (!globalPercentageInput || !globalUpdateFeedback || !increaseGlobalButton || !decreaseGlobalButton) return; const perc = parseFloat(globalPercentageInput.value); if (isNaN(perc) || perc === 0) { showGlobalFeedback("Porcentaje inválido.", "error"); return; } const absPerc = Math.abs(perc); const action = increase ? `AUMENTAR (+${absPerc}%)` : `BAJAR (-${absPerc}%)`; if (!window.confirm(`❓ ¿Aplicar ${action} a TODOS?\n\n⚠️ ¡Masivo!`)) { showGlobalFeedback("Cancelado.", "info"); return; } setGlobalControlsDisabled(true); showGlobalFeedback(`Procesando ${action}... ⏳`, "info"); try { const q = query(collection(db, "productos")); const snap = await getDocs(q); if (snap.empty) { showGlobalFeedback("No hay productos.", "info"); setGlobalControlsDisabled(false); return; } const batch = writeBatch(db); let count = 0; snap.forEach(docSnap => { const data = docSnap.data(); const price = data.precioVenta; if (typeof price === 'number' && !isNaN(price)) { let nP = increase ? price * (1 + absPerc / 100) : price * (1 - absPerc / 100); nP = Math.max(0, Math.round(nP * 100) / 100); batch.update(docSnap.ref, { precioVenta: nP, fechaModificacion: serverTimestamp() }); count++; } else { console.warn(`Omitido ${docSnap.id}`); } }); if (count > 0) { await batch.commit(); showGlobalFeedback(`✅ ${count} actualizados.`, "success"); globalPercentageInput.value = ''; } else { showGlobalFeedback("No se actualizaron (precios inválidos).", "info"); } } catch (error) { console.error("Global error:", error); let msg = `Error: ${error.message}`; if (error.code === 'permission-denied') msg = "Error: Permiso denegado."; showGlobalFeedback(msg, "error"); } finally { setGlobalControlsDisabled(false); } }
+async function handleGlobalPriceUpdate(increase) { if (!globalPercentageInput || !globalUpdateFeedback || !increaseGlobalButton || !decreaseGlobalButton) return; const perc = parseFloat(globalPercentageInput.value); if (isNaN(perc) || perc === 0) { showGlobalFeedback("Porcentaje inválido.", "error"); return; } const absPerc = Math.abs(perc); const action = increase ? `AUMENTAR (+${absPerc}%)` : `BAJAR (-${absPerc}%)`; if (!window.confirm(`❓ ¿Aplicar ${action} a TODOS?\n\n⚠️ ¡Masivo!`)) { showGlobalFeedback("Cancelado.", "info"); return; } setGlobalControlsDisabled(true); showGlobalFeedback(`Procesando ${action}... ⏳`, "info"); try { const q = query(collection(db, "productos")); const snap = await getDocs(q); if (snap.empty) { showGlobalFeedback("No hay productos.", "info"); setGlobalControlsDisabled(false); return; } const batch = writeBatch(db); let count = 0; snap.forEach(docSnap => { const data = docSnap.data(); const price = data.precioVenta; if (typeof price === 'number' && !isNaN(price)) { let nP = increase ? price * (1 + absPerc / 100) : price * (1 - absPerc / 100); nP = Math.max(0, Math.round(nP * 100) / 100); batch.update(docSnap.ref, { precioVenta: nP, fechaModificacion: serverTimestamp() }); count++; } else { console.warn(`Omitido ${docSnap.id}`); } }); if (count > 0) { await batch.commit(); showGlobalFeedback(`✅ ${count} actualizados.`, "success"); globalPercentageInput.value = ''; } else { showGlobalFeedback("No se actualizaron.", "info"); } } catch (error) { console.error("Global error:", error); let msg = `Error: ${error.message}`; if (error.code === 'permission-denied') msg = "Error: Permiso denegado."; showGlobalFeedback(msg, "error"); } finally { setGlobalControlsDisabled(false); } }
 function showGlobalFeedback(message, type = "info") { if (!globalUpdateFeedback) return; globalUpdateFeedback.textContent = message; globalUpdateFeedback.className = `feedback-message ${type}`; globalUpdateFeedback.style.display = 'block'; }
-function setGlobalControlsDisabled(disabled) { if (!globalPercentageInput || !increaseGlobalButton || !decreaseGlobalButton) return; globalPercentageInput.disabled = disabled; increaseGlobalButton.disabled = disabled; decreaseGlobalButton.disabled = disabled; increaseGlobalButton.textContent = disabled ? "Procesando..." : "📈 Aumentar Global %"; decreaseGlobalButton.textContent = disabled ? "Procesando..." : "📉 Bajar Global %"; }
+function setGlobalControlsDisabled(disabled) { if (!globalPercentageInput || !increaseGlobalButton || !decreaseGlobalButton) return; globalPercentageInput.disabled = disabled; increaseGlobalButton.disabled = disabled; decreaseGlobalButton.disabled = disabled; increaseGlobalButton.textContent = disabled ? "Procesando..." : "📈 Aumentar %"; decreaseGlobalButton.textContent = disabled ? "Procesando..." : "📉 Bajar %"; }
 
 
 // --- Funciones Modal QR Code ---
-// *** MODIFICADO: Asegurar limpieza del contenedor QR ***
+// *** CORREGIDO: Limpieza más robusta del contenedor QR ***
 function openQrModal(productId) {
-    if (!qrModalTitle || !qrCodeDisplay || !qrCodeModal) return console.error("Faltan elementos del modal QR.");
+    if (!qrModalTitle || !qrCodeDisplay || !qrCodeModal) return console.error("Missing QR modal elements.");
     const product = allProducts.find(p => p.id === productId); if (!product) { alert("Error: Producto no encontrado para QR."); return; }
     qrModalTitle.textContent = `QR: ${product.nombre}`;
-    // Limpiar explícitamente antes de generar
+
+    // Limpiar contenedor de forma robusta antes de generar nuevo QR
     while (qrCodeDisplay.firstChild) {
-        qrCodeDisplay.removeChild(qrCodeDisplay.firstChild);
+        qrCodeDisplay.removeChild(qrCodeDisplay.lastChild);
     }
-    qrCodeDisplay.innerHTML = ''; // Doble seguridad
+    // qrCodeDisplay.innerHTML = ''; // Esta línea ya no es estrictamente necesaria con el while, pero no hace daño
 
     const priceText = formatPrice(product.precioVenta, false); const qrText = `Producto: ${product.nombre}\nPrecio: $${priceText}`;
-    try { if (typeof QRCode === 'undefined') throw new Error("Librería QRCode no encontrada."); new QRCode(qrCodeDisplay, { text: qrText, width: 256, height: 256, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H }); console.log("QR generado para:", product.nombre); qrCodeModal.style.display = 'block'; } catch (error) { console.error("Error al generar QR:", error); alert("Error al generar código QR."); qrCodeDisplay.innerHTML = '<p style="color:red;">Error al generar QR.</p>'; qrCodeModal.style.display = 'block'; }
+    try { if (typeof QRCode === 'undefined') throw new Error("QRCode lib not found."); new QRCode(qrCodeDisplay, { text: qrText, width: 256, height: 256, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H }); console.log("QR generated for:", product.nombre); qrCodeModal.style.display = 'block'; } catch (error) { console.error("QR generation error:", error); alert("Error al generar QR."); qrCodeDisplay.innerHTML = '<p style="color:red;">Error al generar QR.</p>'; qrCodeModal.style.display = 'block'; }
 }
 
 function closeQrModal() { if (qrCodeModal) qrCodeModal.style.display = 'none'; if (qrCodeDisplay) qrCodeDisplay.innerHTML = ''; }
-function handlePrintQr() { /* ... sin cambios ... */ }
-// Función handlePrintQr (sin cambios relevantes, solo cuerpo resumido)
-function handlePrintQr() { const btns = [printQrButton, closeQrModalButtonAlt, closeQrModalButton]; if (btns.some(b => !b)) console.warn("Faltan botones modal QR."); btns.forEach(b => { if (b) b.style.display = 'none'; }); window.print(); setTimeout(() => { if(printQrButton) printQrButton.style.display = 'inline-block'; if(closeQrModalButtonAlt) closeQrModalButtonAlt.style.display = 'inline-block'; if(closeQrModalButton) closeQrModalButton.style.display = 'block'; }, 1000); }
-
+function handlePrintQr() { const btns = [printQrButton, closeQrModalButtonAlt, closeQrModalButton]; if (btns.some(b => !b)) console.warn("Missing QR modal buttons."); btns.forEach(b => { if (b) b.style.display = 'none'; }); window.print(); setTimeout(() => { if(printQrButton) printQrButton.style.display = 'inline-block'; if(closeQrModalButtonAlt) closeQrModalButtonAlt.style.display = 'inline-block'; if(closeQrModalButton) closeQrModalButton.style.display = 'block'; }, 1000); }
 
 // --- Feedback Temporal ---
-function showTemporaryFeedback(message, type = 'info', duration = 3000) { /* ... sin cambios ... */ }
-// Función showTemporaryFeedback (sin cambios relevantes, solo cuerpo resumido)
-function showTemporaryFeedback(message, type = 'info', duration = 3000) { const el = document.createElement('div'); el.className = `temporary-feedback ${type}`; el.textContent = message; if(document.body) { document.body.appendChild(el); setTimeout(() => { el.remove(); }, duration); } else { console.warn("Feedback no mostrado: Body missing."); } }
-
+function showTemporaryFeedback(message, type = 'info', duration = 3000) { const el = document.createElement('div'); el.className = `temporary-feedback ${type}`; el.textContent = message; if(document.body) { document.body.appendChild(el); setTimeout(() => { el.remove(); }, duration); } else { console.warn("Feedback not shown: Body missing."); } }
 
 // --- Fin del script ---
 initializeEventListeners();

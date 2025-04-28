@@ -1,598 +1,144 @@
 /* Estilos Generales */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #F8F9FA;
-    color: #343A40;
-    margin: 0;
-    padding: 20px;
-    line-height: 1.6;
-    font-size: 16px;
-}
-
-h1, h2, h3, h4 {
-    color: #1D3557;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-button {
-    background-color: #457B9D;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
-    vertical-align: middle;
-}
-
-button:hover {
-    background-color: #1D3557;
-}
-
-button:disabled {
-    background-color: #adb5bd;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-
-input[type="email"],
-input[type="password"],
-input[type="search"],
-input[type="text"],
-input[type="number"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #CED4DA;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1em;
-}
-
-input:disabled, textarea:disabled {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-hr {
-    border: 0;
-    height: 1px;
-    background-color: #e0e0e0;
-    margin: 25px 0;
-}
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F8F9FA; color: #343A40; margin: 0; padding: 20px; line-height: 1.6; font-size: 16px; }
+h1, h2, h3, h4 { color: #1D3557; }
+h1 { text-align: center; margin-bottom: 30px; }
+button { background-color: #457B9D; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease, opacity 0.2s ease; vertical-align: middle; }
+button:hover { background-color: #1D3557; }
+button:disabled { background-color: #adb5bd; cursor: not-allowed; opacity: 0.7; }
+input[type="email"], input[type="password"], input[type="search"], input[type="text"], input[type="number"], textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #CED4DA; border-radius: 4px; box-sizing: border-box; font-size: 1em; }
+input:disabled, textarea:disabled { background-color: #e9ecef; cursor: not-allowed; }
+label { display: block; margin-bottom: 5px; font-weight: bold; }
+hr { border: 0; height: 1px; background-color: #e0e0e0; margin: 25px 0; }
 
 /* Contenedor Login */
-#login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+#login-container { max-width: 400px; margin: 50px auto; padding: 30px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+.form-group { margin-bottom: 20px; }
 
-.form-group {
-    margin-bottom: 20px;
-}
+/* Mensajes Error / Feedback */
+.error-message { color: #E63946; font-size: 0.9em; margin-top: 10px; display: none; font-weight: bold; }
+.feedback-message { margin-top: 15px; font-weight: bold; text-align: center; padding: 10px; border-radius: 4px; display: none; font-size: 0.95em; }
+.feedback-message.success { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; }
+.feedback-message.error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; }
+.feedback-message.info { color: #0c5460; background-color: #d1ecf1; border: 1px solid #bee5eb; }
 
-/* Mensajes de Error / Feedback */
-.error-message {
-    color: #E63946;
-    font-size: 0.9em;
-    margin-top: 10px;
-    display: none;
-    font-weight: bold;
-}
-.feedback-message {
-    margin-top: 15px;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    border-radius: 4px;
-    display: none;
-    font-size: 0.95em;
-}
-.feedback-message.success {
-    color: #155724;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-}
-.feedback-message.error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-}
-.feedback-message.info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border: 1px solid #bee5eb;
-}
+/* App Principal */
+#app-container { max-width: 1200px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+#app-container header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #e0e0e0; padding-bottom: 15px; margin-bottom: 20px; }
+#app-container header h1 { margin: 0; font-size: 1.8em; text-align: left; }
+#user-info { display: flex; align-items: center; gap: 15px; }
+#user-info span { font-style: italic; }
+#logout-button { background-color: #A8DADC; color: #1D3557; font-size: 0.9em; padding: 8px 12px; }
+#logout-button:hover { background-color: #8ac7c7; }
+#user-role-info p { font-size: 1.1em; text-align: center; margin: 0 0 10px 0; }
+#user-role-info strong { color: #457B9D; }
 
+/* Controles Globales Admin */
+#admin-controls h4 { margin-top: 20px; margin-bottom: 15px; color: #1D3557; text-align: center; }
+.global-price-controls { background-color: #f8f9fa; padding: 15px 20px; border-radius: 6px; border: 1px solid #dee2e6; margin-bottom: 10px; }
+.global-price-controls label { display: block; margin-bottom: 10px; font-weight: bold; text-align: center; }
+.percentage-input-group { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; }
+.percentage-input-group input[type="number"] { width: 100px; text-align: center; margin-bottom: 0; }
+.global-action-button { padding: 8px 15px; font-size: 0.95em; color: white; border-radius: 4px; }
+.global-action-button.increase { background-color: #2a9d8f; } .global-action-button.increase:hover { background-color: #268c80; }
+.global-action-button.decrease { background-color: #e76f51; } .global-action-button.decrease:hover { background-color: #d96548; }
+#global-update-feedback { margin-top: 15px; text-align: center; }
 
-/* Contenedor Principal de la App */
-#app-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+/* Controles y Búsqueda */
+.controls-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+.search-container { display: flex; align-items: center; gap: 8px; }
+.search-container label { margin-bottom: 0; font-weight: normal; }
+#search-input { padding: 8px 10px; border: 1px solid #CED4DA; border-radius: 4px; width: 250px; margin-bottom: 0; }
 
-#app-container header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
+/* Lista Productos */
+#product-list-container h2 { text-align: center; color: #1D3557; margin-bottom: 15px; }
+#loading-indicator { text-align: center; padding: 20px; font-size: 1.1em; color: #457B9D; }
+#products-table-container { border: 1px solid #dee2e6; border-radius: 5px; margin-top: 15px; max-height: 65vh; overflow-y: auto; } /* Mantener scroll */
+#products-table { width: 100%; border-collapse: collapse; background-color: #fff; }
+#products-table th, #products-table td { border: 1px solid #dee2e6; padding: 10px 12px; text-align: left; vertical-align: middle; font-size: 0.95em; }
+#products-table thead th { background-color: #e9ecef; font-weight: bold; position: sticky; top: 0; z-index: 1; }
+#products-table tbody tr:nth-child(even) { background-color: #f8f9fa; } #products-table tbody tr:hover { background-color: #e2e6ea; }
+#products-table td:nth-child(5) { font-weight: bold; color: #2a9d8f; min-width: 110px; text-align: right; white-space: nowrap; }
+#products-table td:last-child { text-align: center; min-width: 200px; white-space: nowrap; } /* Columna Acciones */
+#products-table .action-button { padding: 5px 10px; font-size: 0.9em; margin: 0 3px; border-radius: 4px; color: white; display: inline-block; }
+.edit-button { background-color: #fca311; } .edit-button:hover { background-color: #e8930c; }
+.qr-button { background-color: #0077b6; } .qr-button:hover { background-color: #025e8f; }
+.delete-button { background-color: #E63946; } .delete-button:hover { background-color: #cf2f3b; }
+#no-products-message { text-align: center; padding: 20px; color: #6c757d; }
 
-#app-container header h1 {
-    margin: 0;
-    font-size: 1.8em;
-    text-align: left;
-}
+/* Modal (Genérico) */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.6); padding-top: 60px; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+.close-button { color: #aaa; position: absolute; top: 10px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
+.close-button:hover, .close-button:focus { color: black; text-decoration: none; }
 
-#user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-#user-info span {
-    font-style: italic;
-}
-
-#logout-button {
-    background-color: #A8DADC;
-    color: #1D3557;
-    font-size: 0.9em;
-    padding: 8px 12px;
-}
-#logout-button:hover {
-    background-color: #8ac7c7;
-}
-
-/* Info de Rol */
-#user-role-info p {
-    font-size: 1.1em;
-    text-align: center;
-    margin: 0 0 10px 0;
-}
-#user-role-info strong {
-    color: #457B9D;
-}
-
-/* --- Estilos Controles Globales de Admin --- */
-#admin-controls h4 {
-    margin-top: 20px;
-    margin-bottom: 15px;
-    color: #1D3557;
-    text-align: center;
-}
-
-.global-price-controls {
-    background-color: #f8f9fa;
-    padding: 15px 20px;
-    border-radius: 6px;
-    border: 1px solid #dee2e6;
-    margin-bottom: 10px;
-}
-
-.global-price-controls label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.percentage-input-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.percentage-input-group input[type="number"] {
-    width: 100px;
-    text-align: center;
-    margin-bottom: 0;
-}
-
-.global-action-button {
-    padding: 8px 15px;
-    font-size: 0.95em;
-    cursor: pointer;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-}
-
-.global-action-button.increase {
-    background-color: #2a9d8f;
-}
-.global-action-button.increase:hover {
-    background-color: #268c80;
-}
-
-.global-action-button.decrease {
-    background-color: #e76f51;
-}
-.global-action-button.decrease:hover {
-    background-color: #d96548;
-}
-
-#global-update-feedback {
-    margin-top: 15px;
-    text-align: center;
-}
-
-
-/* Sección de Controles (Botón Agregar y Búsqueda) */
-.controls-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.search-container label {
-    margin-bottom: 0;
-    font-weight: normal;
-}
-
-#search-input {
-    padding: 8px 10px;
-    border: 1px solid #CED4DA;
-    border-radius: 4px;
-    width: 250px;
-    margin-bottom: 0;
-}
-
-/* Estilos Lista de Productos */
-#product-list-container h2 {
-    text-align: center;
-    color: #1D3557;
-    margin-bottom: 15px;
-}
-
-#loading-indicator {
-    text-align: center;
-    padding: 20px;
-    font-size: 1.1em;
-    color: #457B9D;
-}
-
-#products-table-container {
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    margin-top: 15px;
-}
-
-#products-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-}
-
-#products-table th,
-#products-table td {
-    border: 1px solid #dee2e6;
-    padding: 10px 12px;
-    text-align: left;
-    vertical-align: middle;
-    font-size: 0.95em;
-}
-
-#products-table thead th {
-    background-color: #e9ecef;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-#products-table tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-#products-table tbody tr:hover {
-    background-color: #e2e6ea;
-}
-
-#products-table td:nth-child(5) { /* Precio Venta */
-    font-weight: bold;
-    color: #2a9d8f;
-    min-width: 110px;
-    text-align: right;
-    white-space: nowrap;
-}
-
-#products-table td:last-child { /* Acciones */
-    text-align: center;
-    /* Aumentar ancho mínimo para acomodar el nuevo botón QR */
-    min-width: 200px;
-    white-space: nowrap;
-}
-
-/* Estilos botones de acción en tabla */
-#products-table .action-button {
-    padding: 5px 10px;
-    font-size: 0.9em;
-    margin: 0 3px;
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    color: white;
-    display: inline-block;
-}
-
-.edit-button { background-color: #fca311; }
-.edit-button:hover { background-color: #e8930c; }
-
-/* *** NUEVO: Estilo botón QR *** */
-.qr-button { background-color: #0077b6; } /* Azul distintivo */
-.qr-button:hover { background-color: #025e8f; }
-
-.delete-button { background-color: #E63946; }
-.delete-button:hover { background-color: #cf2f3b; }
-
-#no-products-message {
-    text-align: center;
-    padding: 20px;
-    color: #6c757d;
-}
-
-
-/* --- Estilos del Modal (Genérico) --- */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding-top: 60px;
-    animation: fadeIn 0.3s;
-}
-
-/* Animación */
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-
-/* Contenido del modal Formulario */
-#product-form-modal .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 30px;
-    border: 1px solid #888;
-    width: 90%;
-    max-width: 600px;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.close-button {
-    color: #aaa;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1; /* Asegurar que no tenga espacio extra */
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-}
-
-/* Título en modal Formulario */
-#product-form-modal .modal-content h2 {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 25px;
-    color: #1D3557;
-}
-
-/* Ajustes form dentro de modal Formulario */
-#product-form .form-group { margin-bottom: 15px; }
-#product-form label { margin-bottom: 3px; font-size: 0.95em; }
-
-/* Controles de % en modal Formulario */
+/* Modal Formulario */
+#product-form-modal .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 600px; border-radius: 8px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+#product-form-modal .modal-content h2 { text-align: center; margin-top: 0; margin-bottom: 25px; }
+#product-form .form-group { margin-bottom: 15px; } #product-form label { margin-bottom: 3px; font-size: 0.95em; }
 #admin-price-controls label { display: block; margin-bottom: 10px; font-weight: bold; }
 .percentage-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
 .percentage-controls input[type="number"] { width: 80px; margin-bottom: 0; flex-grow: 1; }
 .percentage-button { padding: 8px 12px; font-size: 0.9em; flex-shrink: 0; }
-.percentage-button.increase { background-color: #52b788; }
-.percentage-button.increase:hover { background-color: #40916c; }
-.percentage-button.decrease { background-color: #f77f00; }
-.percentage-button.decrease:hover { background-color: #d66c00; }
+.percentage-button.increase { background-color: #52b788; } .percentage-button.increase:hover { background-color: #40916c; }
+.percentage-button.decrease { background-color: #f77f00; } .percentage-button.decrease:hover { background-color: #d66c00; }
+.form-actions { text-align: right; margin-top: 25px; } .form-actions button { margin-left: 10px; }
+.form-actions button[type="button"], .cancel-button { background-color: #6c757d; } .form-actions button[type="button"]:hover, .cancel-button:hover { background-color: #5a6268; }
 
-/* Botones Guardar/Cancelar en modal Formulario */
-.form-actions { text-align: right; margin-top: 25px; }
-.form-actions button { margin-left: 10px; }
-.form-actions button[type="button"],
-.cancel-button { /* Estilo común para Cancelar/Cerrar */
-    background-color: #6c757d;
-}
-.form-actions button[type="button"]:hover,
-.cancel-button:hover {
-    background-color: #5a6268;
-}
+/* Modal QR Code */
+#qr-code-modal .qr-modal-content { background-color: #ffffff; margin: 10% auto; padding: 25px; border: 1px solid #ccc; width: 90%; max-width: 320px; border-radius: 8px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; }
+#qr-code-modal h3 { margin-top: 0; margin-bottom: 20px; font-size: 1.2em; word-wrap: break-word; }
+#qr-code-display { margin: 15px auto; display: flex; justify-content: center; align-items: center; min-height: 200px; }
+#qr-code-display img, #qr-code-display canvas { max-width: 100%; height: auto; border: 1px solid #eee; }
+.qr-modal-actions { margin-top: 25px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px; }
+.qr-modal-actions button { font-size: 0.95em; padding: 10px 15px; }
+#print-qr-button { background-color: #34a853; } #print-qr-button:hover { background-color: #2a8c45; }
 
+/* Feedback Temporal */
+.temporary-feedback { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); z-index: 2000; font-size: 1em; font-weight: bold; opacity: 0.95; transition: opacity 0.5s ease-out; }
+.temporary-feedback.success { background-color: #28a745; color: white; }
+.temporary-feedback.error { background-color: #dc3545; color: white; }
+.temporary-feedback.info { background-color: #17a2b8; color: white; }
 
-/* --- *** NUEVO: Estilos Modal QR Code *** --- */
-#qr-code-modal .qr-modal-content {
-    background-color: #ffffff;
-    margin: 10% auto; /* Un poco más abajo */
-    padding: 25px;
-    border: 1px solid #ccc;
-    width: 90%;
-    max-width: 320px; /* Más pequeño para el QR */
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    text-align: center; /* Centrar contenido */
-}
-
-#qr-code-modal h3 { /* Título del modal QR */
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #1D3557;
-    font-size: 1.2em;
-    word-wrap: break-word; /* Evitar que títulos largos rompan el layout */
-}
-
-#qr-code-display {
-    margin: 15px auto; /* Espacio alrededor del QR */
-    display: flex; /* Para centrar el QR generado */
-    justify-content: center;
-    align-items: center;
-    min-height: 200px; /* Espacio mínimo para el QR */
-}
-
-/* Estilo para el QR generado (img o canvas) */
-#qr-code-display img,
-#qr-code-display canvas {
-    max-width: 100%; /* Asegurar que no se salga */
-    height: auto;
-    border: 1px solid #eee; /* Borde sutil */
-}
-
-.qr-modal-actions {
-    margin-top: 25px;
-    display: flex;
-    justify-content: space-around; /* Distribuir botones */
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.qr-modal-actions button {
-    font-size: 0.95em;
-    padding: 10px 15px;
-}
-
-#print-qr-button {
-    background-color: #34a853; /* Verde para imprimir */
-}
-#print-qr-button:hover {
-    background-color: #2a8c45;
-}
-
-
-/* --- Feedback Temporal (Opcional) --- */
-.temporary-feedback { /* ... (sin cambios) ... */ }
-
-
-/* --- *** NUEVO: Estilos de Impresión *** --- */
+/* --- Estilos de Impresión CORREGIDOS --- */
 @media print {
-    body * {
-        visibility: hidden; /* Ocultar todo por defecto */
-        margin: 0 !important;
-        padding: 0 !important;
-        box-shadow: none !important;
+    body * { visibility: hidden !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; background: white !important; color: black !important; }
+    #qr-code-modal, #qr-code-modal * { visibility: visible !important; }
+    #qr-code-modal { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: auto !important; padding: 0 !important; background-color: white !important; overflow: visible !important; }
+    #qr-code-modal .qr-modal-content { margin: 0 !important; padding: 5mm !important; width: 100% !important; max-width: 100% !important; height: auto !important; border: none !important; box-shadow: none !important; text-align: center !important; page-break-inside: avoid !important; }
+    #qr-code-modal .close-button, #qr-code-modal .qr-modal-actions { display: none !important; }
+    #qr-code-modal h3 { font-size: 10pt !important; margin-bottom: 3mm !important; color: black !important; }
+    #qr-code-display { width: auto !important; /* Dejar que el contenido defina el ancho */ height: auto !important; margin: 0 auto !important; padding: 0 !important; display: block !important; /* Asegurar que sea bloque */ page-break-inside: avoid !important; }
+
+    /* *** CORRECCIÓN CLAVE: Mostrar solo UN elemento QR (preferir IMG si existe) *** */
+    #qr-code-display img {
+        display: block !important; /* Mostrar IMG si existe */
+        width: auto !important;    /* Ancho automático basado en contenido */
+        max-width: 45mm !important; /* Ancho máximo para etiqueta térmica (ajustar) */
+        height: auto !important;   /* Alto automático */
+        max-height: 45mm !important;/* Alto máximo (ajustar) */
+        margin: 0 auto !important; /* Centrar */
         border: none !important;
-        background: white !important;
-        color: black !important;
     }
-
-    /* Hacer visible solo el contenido del modal QR y sus padres */
-    #qr-code-modal, #qr-code-modal * {
-        visibility: visible;
+    #qr-code-display canvas {
+        display: none !important; /* Ocultar CANVAS si existe IMG */
     }
-
-    /* Posicionamiento para impresión */
-    #qr-code-modal {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: auto;
-        padding-top: 0 !important;
-        background-color: white !important;
-        overflow: visible !important;
-    }
-
-    #qr-code-modal .qr-modal-content {
-        margin: 0 !important;
-        padding: 5mm !important; /* Margen pequeño para impresora térmica */
-        width: 100% !important;
-        max-width: 100% !important;
+    /* Si solo existe CANVAS (raro con esta librería), descomentar lo siguiente y comentar lo de IMG */
+    /*
+    #qr-code-display canvas {
+        display: block !important;
+        width: auto !important;
+        max-width: 45mm !important;
         height: auto !important;
+        max-height: 45mm !important;
+        margin: 0 auto !important;
         border: none !important;
-        box-shadow: none !important;
-        text-align: center !important; /* Asegurar centrado */
-        page-break-inside: avoid; /* Intentar no cortar el QR */
     }
-
-    /* Ocultar elementos no deseados en la impresión del QR */
-    #qr-code-modal .close-button,
-    #qr-code-modal .qr-modal-actions {
+    #qr-code-display img { display: none !important; }
+    */
+     /* Ocultar cualquier otro hijo inesperado */
+    #qr-code-display > *:not(img):not(canvas) {
         display: none !important;
     }
 
-    /* Estilo del título y el QR para impresión */
-    #qr-code-modal h3 {
-        font-size: 10pt !important; /* Tamaño de fuente pequeño para thermal */
-        margin-bottom: 3mm !important;
-        color: black !important; /* Asegurar negro */
-    }
-
-    #qr-code-display {
-        width: 90%; /* Ajustar ancho si es necesario */
-        height: auto;
-        margin: 0 auto !important; /* Centrar */
-        padding: 0 !important;
-    }
-
-     /* Asegurar que la imagen/canvas del QR use el espacio */
-    #qr-code-display img,
-    #qr-code-display canvas {
-       width: 100% !important;
-       height: auto !important;
-       max-width: 100% !important;
-       border: none !important; /* Sin borde al imprimir */
-       display: block !important; /* Asegurar que sea bloque */
-       margin: 0 auto !important; /* Centrar */
-    }
-
-    @page {
-        size: auto; /* Intentar adaptarse al tamaño del papel */
-        margin: 5mm; /* Margen mínimo */
-    }
+    @page { size: auto; margin: 4mm; /* Margen más pequeño */ }
 }
