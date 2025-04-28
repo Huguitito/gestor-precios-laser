@@ -173,7 +173,7 @@ function renderProductRow(product) {
         <td>${formatPrice(product.precioVenta)}</td>
         <td>
             <button class="action-button edit-button" data-id="${product.id}" title="Editar Producto">✏️ Editar</button>
-            <button class="action-button qr-button" data-id="${product.id}" title="Generar QR">QR</button> {/* <<< ELIMINADO EL COMENTARIO DE AQUÍ */}
+            <button class="action-button qr-button" data-id="${product.id}" title="Generar QR">QR</button>
             ${currentUserRole === 'administrador' ? `<button class="action-button delete-button" data-id="${product.id}" title="Eliminar Producto">🗑️ Borrar</button>` : ''}
         </td>`;
     if (productsTbody) productsTbody.appendChild(tr); else console.error("tbody missing");
